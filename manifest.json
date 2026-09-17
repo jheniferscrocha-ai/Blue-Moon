@@ -1,0 +1,15 @@
+{
+  "name": "Blue-Moon",
+  "short_name": "BlueMoon",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1329",
+  "theme_color": "#0b1329",
+  "icons": [
+    {
+      "src": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=512",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

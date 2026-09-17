@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1329">
+    <link rel="manifest" href="manifest.json">
+    <title>Blue-Moon | Sanctuary of Stories</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b1329; color: #f3f4f6; }
+        .hero-font { font-family: 'Cinzel', serif; letter-spacing: 0.15em; }
+        .gabriola-title { 
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive; 
+            padding: 0 0.2em; 
+            display: inline-block;
+            font-weight: bold;
+        }
+        .hero-banner { 
+            background-image: linear-gradient(to bottom, rgba(11, 19, 41, 0.4), rgba(11, 19, 41, 0.92)), var(--banner-bg, url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1600&auto=format&fit=crop')); 
+            background-size: cover; 
+            background-position: center; 
+        }
+        .glass-card { background: rgba(19, 31, 61, 0.75); backdrop-filter: blur(14px); border: 1px solid rgba(59, 130, 246, 0.2); }
+        .blue-silver-text {
+            background: linear-gradient(135deg, #ffffff 0%, #3b82f6 35%, #60a5fa 50%, #3b82f6 65%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 35px rgba(59, 130, 246, 0.5);
+        }
+        .silver-subtext {
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.3em;
+        }
+        .modal-animate-in { animation: modalFadeIn 0.2s ease-out forwards; }
+        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.97) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative overflow-x-hidden">
+
+    <div id="sidebar-backdrop" onclick="window.closeSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[998] hidden"></div>
+
+    <!-- MENU LATERAL FLUTUANTE -->
+    <aside id="sidebar-drawer" class="fixed top-0 left-0 h-full w-72 bg-[#0e1738] border-r border-blue-900/40 z-[999] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-5 border-b border-blue-900/30 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-moon text-blue-400 text-2xl"></i>
+                <h1 class="font-bold text-lg text-white">Blue-Moon</h1>
+            </div>
+            <button onclick="window.closeSidebar()" class="p-2 text-gray-400 hover:text-white rounded-lg cursor-pointer">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+            <div class="text-xs font-semibold text-blue-300/70 uppercase tracking-wider px-3 mb-2">Navegação</div>
+            <button onclick="window.switchCategory('all')" id="nav-all" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
+                <div class="flex items-center space-x-3"><i class="fa-solid fa-house w-5 text-center text-blue-400"></i><span>Início</span></div>
+                <span id="badge-all" class="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full font-semibold">0</span>
+            </button>
+            <button onclick="window.switchCategory('favorites')" id="nav-favorites" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
+                <div class="flex items-center space-x-3"><i class="fa-solid fa-heart w-5 text-center text-rose-400"></i><span>Favoritos</span></div>
+                <span id="badge-favorites" class="text-xs bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded-full font-semibold">0</span>
+            </button>
+
+            <div class="text-xs font-semibold text-blue-300/70 uppercase tracking-wider px-3 mt-6 mb-2">Categorias</div>
+            <button onclick="window.switchCategory('anime')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
+                <div class="flex items-center space-x-3"><i class="fa-solid fa-wand-magic-sparkles w-5 text-center text-blue-400"></i><span>Animes</span></div>
+                <span id="badge-anime" class="text-xs bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full">0</span>
+            </button>
+            <button onclick="window.switchCategory('short')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
+                <div class="flex items-center space-x-3"><i class="fa-solid fa-film w-5 text-center text-amber-400"></i><span>Curtas</span></div>
+                <span id="badge-short" class="text-xs bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full">0</span>
+            </button>
+            <button onclick="window.switchCategory('dorama')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
+                <div class="flex items-center space-x-3"><i class="fa-solid fa-tv w-5 text-center text-blue-400"></i><span>Dramas</span></div>
+                <span id="badge-dorama" class="text-xs bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full">0</span>
+            </button>
+            <button onclick="window.switchCategory('movie')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
+                <div class="flex items-center space-x-3"><i class="fa-solid fa-clapperboard w-5 text-center text-red-400"></i><span>Filmes</span></div>
+                <span id="badge-movie" class="text-xs bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full">0</span>
+            </button>
+            <button onclick="window.switchCategory('book')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
+                <div class="flex items-center space-x-3"><i class="fa-solid fa-book w-5 text-center text-emerald-400"></i><span>Livros</span></div>
+                <span id="badge-book" class="text-xs bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full">0</span>
+            </button>
+            <button onclick="window.switchCategory('series')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
+                <div class="flex items-center space-x-3"><i class="fa-solid fa-video w-5 text-center text-cyan-400"></i><span>Séries</span></div>
+                <span id="badge-series" class="text-xs bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full">0</span>
+            </button>
+        </nav>
+    </aside>
+
+    <div class="flex-1 flex flex-col min-w-0">
+        <header id="hero-header" class="hero-banner relative transition-all duration-500 py-20 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-white/10">
+            <button onclick="window.openSidebar()" class="absolute top-4 left-4 bg-[#131f3d]/70 hover:bg-[#131f3d] text-gray-200 hover:text-white px-3.5 py-2 rounded-xl border border-blue-500/25 text-xs font-medium flex items-center space-x-2 backdrop-blur-md cursor-pointer transition shadow-lg">
+                <i class="fa-solid fa-bars text-sm"></i><span class="font-semibold tracking-wider">MENU</span>
+            </button>
+
+            <div class="max-w-5xl mx-auto flex flex-col items-center text-center space-y-4">
+                <button onclick="window.openBannerModal()" class="absolute top-4 right-4 bg-[#131f3d]/70 hover:bg-[#131f3d] text-gray-200 hover:text-white px-3 py-1.5 rounded-xl border border-blue-500/25 text-xs font-medium flex items-center space-x-1.5 backdrop-blur-md cursor-pointer transition">
+                    <i class="fa-solid fa-image"></i><span>Mudar Fundo</span>
+                </button>
+
+                <div class="space-y-3 pt-6">
+                    <h2 class="text-6xl sm:text-8xl md:text-9xl gabriola-title blue-silver-text tracking-normal">Blue-Moon</h2>
+                    <div class="flex items-center justify-center space-x-3 pt-2">
+                        <span class="h-[1px] w-12 bg-gradient-to-r from-transparent to-blue-400/60"></span>
+                        <p class="text-xs sm:text-sm font-medium silver-subtext uppercase">SANCTUARY OF STORIES</p>
+                        <span class="h-[1px] w-12 bg-gradient-to-l from-transparent to-blue-400/60"></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+            <section class="flex justify-center">
+                <button onclick="window.openAddModal()" class="w-full sm:w-80 py-3 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold rounded-2xl border border-blue-400/40 shadow-xl flex items-center justify-center space-x-2.5 active:scale-95 cursor-pointer transition">
+                    <i class="fa-solid fa-plus text-sm"></i>
+                    <span class="text-xs font-bold tracking-widest uppercase">ADICIONAR</span>
+                </button>
+            </section>
+
+            <section id="stats-section">
+                <div class="grid grid-cols-2 sm:grid-cols-6 gap-3">
+                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between shadow-xl">
+                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Total</p><h3 class="text-2xl font-extrabold text-white mt-0.5" id="stat-acervo">0</h3></div>
+                        <div class="w-9 h-9 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center text-blue-300"><i class="fa-solid fa-layer-group text-sm"></i></div>
+                    </div>
+                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
+                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase" id="stat-completed-label">Concluídos</p><h3 class="text-2xl font-bold text-emerald-400 mt-0.5" id="stat-completed">0</h3></div>
+                        <div class="w-9 h-9 bg-emerald-500/20 border border-emerald-500/30 rounded-xl flex items-center justify-center text-emerald-400"><i class="fa-solid fa-circle-check text-sm"></i></div>
+                    </div>
+                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
+                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase" id="stat-progress-label">Em Andamento</p><h3 class="text-2xl font-bold text-amber-400 mt-0.5" id="stat-in-progress">0</h3></div>
+                        <div class="w-9 h-9 bg-amber-500/20 border border-amber-500/30 rounded-xl flex items-center justify-center text-amber-400"><i class="fa-solid fa-spinner text-sm"></i></div>
+                    </div>
+                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
+                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase" id="stat-planned-label">Quero Ver</p><h3 class="text-2xl font-bold text-sky-400 mt-0.5" id="stat-planned">0</h3></div>
+                        <div class="w-9 h-9 bg-sky-500/20 border border-sky-500/30 rounded-xl flex items-center justify-center text-sky-400"><i class="fa-solid fa-bookmark text-sm"></i></div>
+                    </div>
+                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
+                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Abandonados</p><h3 class="text-2xl font-bold text-rose-400 mt-0.5" id="stat-abandoned">0</h3></div>
+                        <div class="w-9 h-9 bg-rose-500/20 border border-rose-500/30 rounded-xl flex items-center justify-center text-rose-400"><i class="fa-solid fa-ban text-sm"></i></div>
+                    </div>
+                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
+                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Favoritos</p><h3 class="text-2xl font-bold text-rose-400 mt-0.5" id="stat-favorites">0</h3></div>
+                        <div class="w-9 h-9 bg-rose-500/20 border border-rose-500/30 rounded-xl flex items-center justify-center text-rose-400"><i class="fa-solid fa-heart text-sm"></i></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glass-card p-4 rounded-2xl flex flex-col sm:flex-row gap-3 items-center justify-between">
+                <div class="relative w-full sm:w-1/2">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-300 text-sm"></i>
+                    <input type="text" id="search-input" oninput="window.renderMediaGrid()" placeholder="Buscar por título ou criador/diretor..." class="w-full bg-[#0e1738] border border-blue-900/50 text-gray-200 text-sm rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:border-blue-400">
+                </div>
+                <div class="w-full sm:w-auto flex items-center space-x-2">
+                    <select id="sort-select" onchange="window.renderMediaGrid()" class="w-full sm:w-48 bg-[#0e1738] border border-blue-900/50 text-gray-200 text-sm rounded-xl px-3 py-2.5 focus:outline-none focus:border-blue-400">
+                        <option value="recent">Mais Recentes</option>
+                        <option value="title">Nome (A-Z)</option>
+                        <option value="rating">Melhor Avaliados</option>
+                    </select>
+                </div>
+            </section>
+
+            <section id="media-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"></section>
+
+            <div id="empty-state" class="glass-card p-12 rounded-2xl text-center space-y-2">
+                <i class="fa-solid fa-box-open text-3xl text-blue-400/60"></i>
+                <h4 class="text-base font-bold text-gray-200">Nenhuma obra cadastrada</h4>
+                <p class="text-xs text-blue-200/70">Toque em "ADICIONAR" para inserir uma nova obra no acervo.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL DE FUNDO -->
+    <div id="modal-banner" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-3">
+        <div class="glass-card w-full max-w-md rounded-2xl border border-blue-500/30 shadow-2xl modal-animate-in p-5 space-y-4">
+            <div class="flex items-center justify-between border-b border-blue-900/40 pb-3">
+                <h3 class="text-base font-bold text-white flex items-center space-x-2"><i class="fa-solid fa-image text-blue-400"></i><span>Alterar Fundo</span></h3>
+                <button type="button" onclick="window.closeBannerModal()" class="text-gray-300 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <label class="flex flex-col items-center justify-center border-2 border-dashed border-blue-500/40 hover:border-blue-400 bg-[#0e1738]/50 rounded-xl p-5 cursor-pointer text-center">
+                <i class="fa-solid fa-cloud-arrow-up text-2xl text-blue-400 mb-2"></i>
+                <span id="banner-file-name" class="text-xs text-gray-300 font-medium">Escolher arquivo</span>
+                <input type="file" id="form-banner-file" accept="image/*" class="hidden" onchange="window.previewBannerFileName(event)">
+            </label>
+            <div class="flex justify-end space-x-2 pt-2">
+                <button type="button" onclick="window.closeBannerModal()" class="px-4 py-2 bg-blue-950/60 text-gray-200 text-xs font-semibold rounded-xl cursor-pointer">Cancelar</button>
+                <button type="button" onclick="window.saveBannerImageFile()" class="px-4 py-2 bg-[#2563eb] text-white text-xs font-semibold rounded-xl cursor-pointer">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FORMULÁRIO -->
+    <div id="modal-add-edit" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-3 overflow-y-auto">
+        <div class="glass-card w-full max-w-2xl rounded-2xl border border-blue-500/30 shadow-2xl modal-animate-in max-h-[90vh] flex flex-col overflow-hidden my-auto">
+            <div class="px-5 py-4 border-b border-blue-900/40 flex items-center justify-between bg-[#0e1738]/60">
+                <h3 class="text-base font-bold text-white"><i class="fa-solid fa-pen-to-square text-blue-400 mr-2"></i>Cadastrar Obra</h3>
+                <button type="button" onclick="window.closeAddModal()" class="text-gray-300 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form id="media-form" onsubmit="window.saveMedia(event)" class="p-5 overflow-y-auto space-y-4 flex-1">
+                <div><label class="block text-xs font-semibold text-blue-200 mb-1">URL Capa</label><input type="url" id="form-cover" placeholder="https://..." class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200"></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Categoria *</label>
+                        <select id="form-category" onchange="window.onCategoryFormChange()" required class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                            <option value="anime">Anime</option><option value="short">Curta</option><option value="dorama">Drama</option><option value="movie">Filme</option><option value="book">Livro</option><option value="series">Série</option>
+                        </select>
+                    </div>
+                    <div><label class="block text-xs font-semibold text-blue-200 mb-1">Título *</label><input type="text" id="form-title" required class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200"></div>
+                </div>
+                <div><label class="block text-xs font-semibold text-blue-200 mb-1">Sinopse</label><textarea id="form-synopsis" rows="2" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl p-3 text-gray-200"></textarea></div>
+                <div>
+                    <label class="block text-xs font-semibold text-blue-200 mb-1">Status</label>
+                    <select id="form-status" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                        <option value="completed">Concluído</option><option value="in-progress">Em Andamento</option><option value="planned">Quero Ver</option><option value="abandoned">Abandonado</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center bg-[#0e1738]/50 p-3.5 rounded-xl border border-blue-900/30">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" id="form-favorite" class="w-4 h-4 rounded text-blue-600 bg-[#0e1738]">
+                        <span class="text-xs font-semibold text-blue-200">Favorito</span>
+                    </label>
+                    <div><label class="block text-xs font-semibold text-blue-200 mb-1">Nota (0-10)</label><input type="number" id="form-rating" min="0" max="10" step="0.5" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200"></div>
+                </div>
+                <div class="pt-3 border-t border-blue-900/40 flex justify-end space-x-2">
+                    <button type="button" onclick="window.closeAddModal()" class="px-4 py-2 bg-blue-950/60 text-gray-200 text-xs font-semibold rounded-xl cursor-pointer">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-[#2563eb] text-white text-xs font-semibold rounded-xl cursor-pointer">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DETALHES -->
+    <div id="modal-details" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-3 overflow-y-auto">
+        <div class="glass-card w-full max-w-lg rounded-2xl border border-blue-500/30 shadow-2xl modal-animate-in max-h-[90vh] flex flex-col overflow-hidden my-auto">
+            <div class="px-5 py-4 border-b border-blue-900/40 flex items-center justify-between bg-[#0e1738]/60">
+                <h3 class="text-base font-bold text-white">Detalhes</h3>
+                <button type="button" onclick="window.closeDetailsModal()" class="text-gray-300 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div id="details-content" class="p-5 overflow-y-auto space-y-4 flex-1"></div>
+        </div>
+    </div>
+
+    <!-- SCRIPT FIREBASE + LÓGICA -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, initializeFirestore, persistentLocalCache } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD_bk-Qu1vjejNGeGlprEs7isWacxpneTo",
+            authDomain: "blue-moon-jscr8785.firebaseapp.com",
+            projectId: "blue-moon-jscr8785",
+            storageBucket: "blue-moon-jscr8785.firebasestorage.app",
+            messagingSenderId: "116253867860",
+            appId: "1:116253867860:web:39cfe119f7cb8a7570d2c1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+// ... logo após o getFirestore(app):
+const db = getFirestore(app);
+enableIndexedDbPersistence(db).catch((err) => {
+  if (err.code == 'failed-precondition') {
+    console.multiLog?.('Muitas abas abertas, persistência offline limitada a umaaba.');
+  } else if (err.code == 'unimplemented') {
+    console.log('O navegador não suporta persistência offline.');
+  }
+});
+
+        let mediaItems = [];
+        let currentCategory = 'all';
+
+        const savedBanner = localStorage.getItem('blue_moon_banner_bg');
+        if (savedBanner) { document.documentElement.style.setProperty('--banner-bg', `url('${savedBanner}')`); }
+
+        // Ouve dados do Firestore (funciona offline e sincroniza ao reconectar)
+        onSnapshot(collection(db, 'media_obras'), (snapshot) => {
+            mediaItems = [];
+            snapshot.forEach((docSnap) => {
+                mediaItems.push({ id: docSnap.id, ...docSnap.data() });
+            });
+            window.updateStats();
+            window.renderMediaGrid();
+        }, (err) => {
+            console.warn("Modo offline ativo ou aguardando rede:", err);
+        });
+
+        window.openBannerModal = () => document.getElementById('modal-banner').classList.remove('hidden');
+        window.closeBannerModal = () => document.getElementById('modal-banner').classList.add('hidden');
+        window.previewBannerFileName = (e) => {
+            const file = e.target.files[0];
+            if (file) document.getElementById('banner-file-name').innerText = file.name;
+        };
+        window.saveBannerImageFile = () => {
+            const file = document.getElementById('form-banner-file').files[0];
+            if (!file) return window.closeBannerModal();
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.documentElement.style.setProperty('--banner-bg', `url('${e.target.result}')`);
+                localStorage.setItem('blue_moon_banner_bg', e.target.result);
+                window.closeBannerModal();
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.openSidebar = () => { document.getElementById('sidebar-drawer').classList.remove('-translate-x-full'); document.getElementById('sidebar-backdrop').classList.remove('hidden'); };
+        window.closeSidebar = () => { document.getElementById('sidebar-drawer').classList.add('-translate-x-full'); document.getElementById('sidebar-backdrop').classList.add('hidden'); };
+
+        window.openAddModal = () => document.getElementById('modal-add-edit').classList.remove('hidden');
+        window.closeAddModal = () => document.getElementById('modal-add-edit').classList.add('hidden');
+
+        window.switchCategory = (cat) => {
+            currentCategory = cat;
+            window.closeSidebar();
+            window.updateStats();
+            window.renderMediaGrid();
+        };
+
+        window.onCategoryFormChange = () => {};
+
+        window.saveMedia = async (e) => {
+            e.preventDefault();
+            const newItem = {
+                cover: document.getElementById('form-cover').value,
+                category: document.getElementById('form-category').value,
+                title: document.getElementById('form-title').value,
+                synopsis: document.getElementById('form-synopsis').value,
+                status: document.getElementById('form-status').value,
+                rating: document.getElementById('form-rating').value,
+                favorite: document.getElementById('form-favorite').checked,
+                createdAt: Date.now()
+            };
+            try {
+                await addDoc(collection(db, 'media_obras'), newItem);
+                document.getElementById('media-form').reset();
+                window.closeAddModal();
+            } catch (err) {
+                console.error("Erro ao salvar:", err);
+            }
+        };
+
+        window.updateStats = () => {
+            let list = mediaItems;
+            if (currentCategory === 'favorites') list = mediaItems.filter(i => i.favorite);
+            else if (currentCategory !== 'all') list = mediaItems.filter(i => i.category === currentCategory);
+
+            const setVal = (id, val) => { const el = document.getElementById(id); if(el) el.innerText = val; };
+            setVal('stat-acervo', list.length);
+            setVal('stat-completed', list.filter(i => i.status === 'completed').length);
+            setVal('stat-in-progress', list.filter(i => i.status === 'in-progress').length);
+            setVal('stat-planned', list.filter(i => i.status === 'planned').length);
+            setVal('stat-abandoned', list.filter(i => i.status === 'abandoned').length);
+            setVal('stat-favorites', list.filter(i => i.favorite).length);
+
+            ['all','favorites','anime','short','dorama','movie','book','series'].forEach(c => {
+                const count = c === 'all' ? mediaItems.length : (c === 'favorites' ? mediaItems.filter(i => i.favorite).length : mediaItems.filter(i => i.category === c).length);
+                const badge = document.getElementById(`badge-${c}`);
+                if (badge) badge.innerText = count;
+            });
+        };
+
+        window.renderMediaGrid = () => {
+            const grid = document.getElementById('media-grid');
+            const searchInput = document.getElementById('search-input');
+            const emptyState = document.getElementById('empty-state');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const search = searchInput ? searchInput.value.toLowerCase() : '';
+            let list = mediaItems.filter(i => {
+                if (currentCategory === 'favorites') return i.favorite;
+                if (currentCategory !== 'all') return i.category === currentCategory;
+                return true;
+            }).filter(i => i.title?.toLowerCase().includes(search));
+
+            if (emptyState) emptyState.classList.toggle('hidden', list.length > 0);
+
+            list.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'glass-card rounded-xl overflow-hidden shadow-lg border border-blue-500/20 flex flex-col cursor-pointer hover:border-blue-400/60 transition';
+                card.onclick = () => window.openDetailsModal(item.id);
+                card.innerHTML = `
+                    <div class="relative aspect-[2/3] bg-blue-950/40">
+                        <img class="w-full h-full object-cover" src="${item.cover || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=600'}" alt="${item.title}">
+                        ${item.favorite ? '<span class="absolute top-2 right-2 text-rose-400 text-sm">❤️</span>' : ''}
+                    </div>
+                    <div class="p-3 flex-1 flex flex-col justify-between">
+                        <h4 class="font-bold text-sm text-white truncate">${item.title}</h4>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        };
+
+        window.openDetailsModal = (id) => {
+            const item = mediaItems.find(i => i.id === id);
+            if (!item) return;
+            document.getElementById('details-content').innerHTML = `
+                <h4 class="text-lg font-extrabold text-white">${item.title}</h4>
+                <p class="text-xs text-blue-200">${item.synopsis || 'Sem sinopse.'}</p>
+                <div class="pt-3 border-t border-blue-900/40 flex justify-between">
+                    <button onclick="window.deleteMedia('${item.id}')" class="px-4 py-2 bg-rose-600/20 text-rose-300 text-xs font-semibold rounded-xl cursor-pointer">Excluir</button>
+                    <button onclick="window.closeDetailsModal()" class="px-4 py-2 bg-blue-950/60 text-gray-200 text-xs font-semibold rounded-xl cursor-pointer">Fechar</button>
+                </div>
+            `;
+            document.getElementById('modal-details').classList.remove('hidden');
+        };
+        window.closeDetailsModal = () => document.getElementById('modal-details').classList.add('hidden');
+
+        window.deleteMedia = async (id) => {
+            if (confirm('Deseja excluir?')) {
+                await deleteDoc(doc(db, 'media_obras', id));
+                window.closeDetailsModal();
+            }
+        };
+
+        // Registro básico de PWA / Service Worker (opcional para instalação)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        }
+    </script>
+</body>
+</html>
