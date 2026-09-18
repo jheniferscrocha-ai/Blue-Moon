@@ -9,8 +9,8 @@
   "theme_color": "#07122b",
   "icons": [
     {
-      "src": "/Blue-Moon/lua-icon-192.png",
-      "sizes": "192x192",
+      "src": "/Blue-Moon/lua-icon.png",
+      "sizes": "512x512",
       "type": "image/png"
     },
     {
