@@ -402,10 +402,8 @@
             }
         };
 
-        if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/Blue-Moon/sw.js').catch(() => {});
+       if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js', { scope: './' })
+        .then(reg => console.log('SW scope:', reg.scope))
+        .catch(err => console.error('Erro SW:', err));
 }
-        }
-    </script>
-</body>
-</html>
