@@ -40,8 +40,17 @@
         @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.97) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col relative overflow-x-hidden">
+<body class="min-h-screen flex flex-col relative overflow...">
+  <!-- Botão de login discreto -->
+  <div style="position:fixed; top:10px; right:10px; z-index:999; display:flex; gap:8px; align-items:center;">
+    <span id="userInfo" style="color:#fff; font-size:12px; display:none; background:rgba(0,0,0,0.6); padding:4px 8px; border-radius:12px;"></span>
+    <button id="loginBtn" style="background:rgba(0,0,0,0.6); color:#fff; border:1px solid rgba(255,255,255,0.2); padding:6px 12px; border-radius:20px; font-size:12px; cursor:pointer;">
+      🔑 Entrar
+    </button>
+  </div>
 
+  <div id="sidebar-backdrop"...>
+    
     <div id="sidebar-backdrop" onclick="window.closeSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[998] hidden"></div>
 
     <!-- MENU LATERAL FLUTUANTE -->
@@ -402,9 +411,43 @@
             }
         };
 
-      if ('serviceWorker' in navigator) {
+      // --- INÍCIO FIREBASE AUTH ---
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+  
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  const loginBtn = document.getElementById('loginBtn');
+  const userInfo = document.getElementById('userInfo');
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      loginBtn.textContent = '🚪 Sair';
+      if(userInfo) {
+        userInfo.style.display = 'inline';
+        userInfo.textContent = `Olá, ${user.displayName.split(' ')[0]}`;
+      }
+    } else {
+      loginBtn.textContent = '🔑 Entrar';
+      if(userInfo) userInfo.style.display = 'none';
+    }
+  });
+
+  if (loginBtn) {
+    loginBtn.addEventListener('click', async () => {
+      if (auth.currentUser) {
+        await signOut(auth);
+      } else {
+        try {
+          await signInWithPopup(auth, provider);
+        } catch (error) {
+          console.error("Erro no login:", error);
+        }
+      }
+    });
+  }
+  // --- FIM FIREBASE AUTH ---
+
+  if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/Blue-Moon/sw.js');
   }
-  </script>
-</body>
-</html>
+</script>
