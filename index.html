@@ -199,7 +199,7 @@
         </div>
     </div>
 
-    <!-- MODAL FORMULÁRIO (CADASTRO COMPLETO) -->
+    <!-- MODAL FORMULÁRIO (CADASTRO REORGANIZADO) -->
     <div id="modal-add-edit" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-3 overflow-y-auto">
         <div class="glass-card w-full max-w-2xl rounded-2xl border border-blue-500/30 shadow-2xl modal-animate-in max-h-[92vh] flex flex-col overflow-hidden my-auto">
             <div class="px-5 py-4 border-b border-blue-900/40 flex items-center justify-between bg-[#0e1738]/60">
@@ -217,26 +217,13 @@
                     </label>
                 </div>
 
-                <!-- Categoria & Título -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Categoria *</label>
-                        <select id="form-category" required onchange="window.toggleCategoryFields()" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
-                            <option value="anime">Anime</option>
-                            <option value="short">Curta</option>
-                            <option value="dorama">Drama</option>
-                            <option value="movie">Filme</option>
-                            <option value="book">Livro</option>
-                            <option value="series">Série</option>
-                        </select>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Título *</label>
-                        <input type="text" id="form-title" required class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
-                    </div>
+                <!-- Título -->
+                <div>
+                    <label class="block text-xs font-semibold text-blue-200 mb-1">Título *</label>
+                    <input type="text" id="form-title" required class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
                 </div>
 
-                <!-- Título Original e Status logo abaixo -->
+                <!-- Título Original e Status lado a lado -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-blue-200 mb-1">Título Original</label>
@@ -253,15 +240,40 @@
                     </div>
                 </div>
 
-                <!-- Género & Ano de Lançamento -->
+                <!-- Sinopse (debaxo de Título Original e Status) -->
+                <div>
+                    <label class="block text-xs font-semibold text-blue-200 mb-1">Sinopse</label>
+                    <textarea id="form-synopsis" rows="2" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl p-3 text-gray-200"></textarea>
+                </div>
+
+                <!-- Género ao lado da Categoria -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-blue-200 mb-1">Género</label>
                         <input type="text" id="form-genre" placeholder="Ex: Fantasia, Romance..." class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Ano de Lançamento</label>
-                        <input type="number" id="form-release-year" placeholder="2026" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Categoria *</label>
+                        <select id="form-category" required onchange="window.toggleCategoryFields()" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                            <option value="anime">Anime</option>
+                            <option value="short">Curta</option>
+                            <option value="dorama">Drama</option>
+                            <option value="movie">Filme</option>
+                            <option value="book">Livro</option>
+                            <option value="series">Série</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Data de Lançamento (Dia/Mês/Ano) ao lado da Data de Visualização -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Data de Lançamento (Dia/Mês/Ano)</label>
+                        <input type="date" id="form-release-date" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Data de Visualização</label>
+                        <input type="date" id="form-watch-date" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
                     </div>
                 </div>
 
@@ -293,18 +305,6 @@
                             <input type="number" id="form-ovas" min="0" value="0" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
                         </div>
                     </div>
-                </div>
-
-                <!-- Sinopse -->
-                <div>
-                    <label class="block text-xs font-semibold text-blue-200 mb-1">Sinopse</label>
-                    <textarea id="form-synopsis" rows="2" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl p-3 text-gray-200"></textarea>
-                </div>
-
-                <!-- Data de Visualização -->
-                <div>
-                    <label class="block text-xs font-semibold text-blue-200 mb-1">Data de Visualização</label>
-                    <input type="date" id="form-watch-date" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
                 </div>
 
                 <!-- Nota (0.5 steps) & Favorito Lado a Lado -->
@@ -504,7 +504,7 @@
                 originalTitle: document.getElementById('form-original-title').value,
                 status: document.getElementById('form-status').value,
                 genre: document.getElementById('form-genre').value,
-                releaseYear: document.getElementById('form-release-year').value,
+                releaseDate: document.getElementById('form-release-date').value,
                 author: cat === 'book' ? document.getElementById('form-author').value : '',
                 director: (cat === 'short' || cat === 'movie' || cat === 'series') ? document.getElementById('form-director').value : '',
                 creator: cat === 'anime' ? document.getElementById('form-creator').value : '',
@@ -590,7 +590,7 @@
             if (item.originalTitle) extraInfo += `<p><strong>Título Original:</strong> ${item.originalTitle}</p>`;
             if (item.status) extraInfo += `<p><strong>Status:</strong> ${item.status}</p>`;
             if (item.genre) extraInfo += `<p><strong>Género:</strong> ${item.genre}</p>`;
-            if (item.releaseYear) extraInfo += `<p><strong>Ano:</strong> ${item.releaseYear}</p>`;
+            if (item.releaseDate) extraInfo += `<p><strong>Data de Lançamento:</strong> ${item.releaseDate}</p>`;
             if (item.author) extraInfo += `<p><strong>Autor:</strong> ${item.author}</p>`;
             if (item.director) extraInfo += `<p><strong>Diretor:</strong> ${item.director}</p>`;
             if (item.creator) extraInfo += `<p><strong>Criador:</strong> ${item.creator}</p>`;
