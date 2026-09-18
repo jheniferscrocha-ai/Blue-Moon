@@ -40,10 +40,10 @@
         @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.97) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
     </style>
 </head>
+<body class="min-h-screen flex flex-col relative overflow-x-hidden pt-10">
 
-    <body class="min-h-screen flex flex-col relative overflow-x-hidden pt-12">
-    <!-- BARRA SUPERIOR DE AUTENTICAÇÃO (Fixa no topo absoluto) -->
-    <div id="auth-bar" class="fixed top-0 left-0 right-0 h-10 bg-[#0b1329]/90 backdrop-blur-md border-b border-blue-900/40 z-[1001] flex items-center justify-end px-4 space-x-3 text-xs">
+    <!-- BARRA SUPERIOR DE AUTENTICAÇÃO -->
+    <div id="auth-bar" class="fixed top-0 left-0 right-0 h-10 bg-[#0b1329]/95 backdrop-blur-md border-b border-blue-900/40 z-[1001] flex items-center justify-end px-4 space-x-3 text-xs">
         <span id="userInfo" style="display:none;" class="text-blue-200 font-medium"></span>
         <button id="loginBtn" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded-lg font-semibold transition cursor-pointer flex items-center space-x-1.5 shadow-md">
             <i class="fa-solid fa-user-circle"></i>
@@ -54,35 +54,12 @@
     <div id="sidebar-backdrop" onclick="window.closeSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[998] hidden"></div>
 
     <!-- MENU LATERAL FLUTUANTE -->
-    <aside id="sidebar-drawer" ...>
-        <!-- o teu conteúdo doaside atual -->
-    </aside>
-
-    <div class="flex-1 flex flex-col min-w-0">
-        <!-- HEADER / BANNER -->
-        <header id="hero-header" class="hero-banner relative transition-all duration-500 py-20 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-white/10 mt-10">
-            <!-- Botão Menu (à esquerda, sem colisão) -->
-            <button onclick="window.openSidebar()" class="absolute top-4 left-4 bg-[#131f3d]/70 hover:bg-[#131f3d] text-gray-200 hover:text-white px-3.5 py-2 rounded-xl border border-blue-500/25 text-xs font-medium flex items-center space-x-2 backdrop-blur-md cursor-pointer transition shadow-lg z-10">
-                <i class="fa-solid fa-bars text-sm"></i><span class="font-semibold tracking-wider">MENU</span>
-            </button>
-
-            <!-- Botão Mudar Fundo (à direita, sem colisão) -->
-            <button onclick="window.openBannerModal()" class="absolute top-4 right-4 bg-[#131f3d]/70 hover:bg-[#131f3d] text-gray-200 hover:text-white px-3 py-1.5 rounded-xl border border-blue-500/25 text-xs font-medium flex items-center space-x-1.5 backdrop-blur-md cursor-pointer transition z-10">
-                <i class="fa-solid fa-image"></i><span>Mudar Fundo</span>
-            </button>
-
-            <!-- Resto do banner (título Blue-Moon, etc.) -->
-            <div class="max-w-5xl mx-auto flex flex-col items-center text-center space-y-4 pt-4">
-                <div class="space-y-3 pt-6">
-                    <h2 class="text-6xl sm:text-8xl md:text-9xl gabriola-title blue-silver-text tracking-normal">Blue-Moon</h2>
-                    <div class="flex items-center justify-center space-x-3 pt-2">
-                        <span class="h-[1px] w-12 bg-gradient-to-r from-transparent to-blue-400/60"></span>
-                        <p class="text-xs sm:text-sm font-medium silver-subtext uppercase">SANCTUARY OF STORIES</p>
-                        <span class="h-[1px] w-12 bg-gradient-to-l from-transparent to-blue-400/60"></span>
-                    </div>
-                </div>
+    <aside id="sidebar-drawer" class="fixed top-0 left-0 h-full w-72 bg-[#0e1738] border-r border-blue-900/40 z-[999] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-5 border-b border-blue-900/30 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-moon text-blue-400 text-2xl"></i>
+                <h1 class="font-bold text-lg text-white">Blue-Moon</h1>
             </div>
-        </header>
             <button onclick="window.closeSidebar()" class="p-2 text-gray-400 hover:text-white rounded-lg cursor-pointer">
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
@@ -128,16 +105,16 @@
     </aside>
 
     <div class="flex-1 flex flex-col min-w-0">
-        <header id="hero-header" class="hero-banner relative transition-all duration-500 py-20 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-white/10">
-            <button onclick="window.openSidebar()" class="absolute top-4 left-4 bg-[#131f3d]/70 hover:bg-[#131f3d] text-gray-200 hover:text-white px-3.5 py-2 rounded-xl border border-blue-500/25 text-xs font-medium flex items-center space-x-2 backdrop-blur-md cursor-pointer transition shadow-lg">
+        <header id="hero-header" class="hero-banner relative transition-all duration-500 py-20 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-white/10 mt-6">
+            <button onclick="window.openSidebar()" class="absolute top-4 left-4 bg-[#131f3d]/70 hover:bg-[#131f3d] text-gray-200 hover:text-white px-3.5 py-2 rounded-xl border border-blue-500/25 text-xs font-medium flex items-center space-x-2 backdrop-blur-md cursor-pointer transition shadow-lg z-10">
                 <i class="fa-solid fa-bars text-sm"></i><span class="font-semibold tracking-wider">MENU</span>
             </button>
 
-            <div class="max-w-5xl mx-auto flex flex-col items-center text-center space-y-4">
-                <button onclick="window.openBannerModal()" class="absolute top-4 right-4 bg-[#131f3d]/70 hover:bg-[#131f3d] text-gray-200 hover:text-white px-3 py-1.5 rounded-xl border border-blue-500/25 text-xs font-medium flex items-center space-x-1.5 backdrop-blur-md cursor-pointer transition">
-                    <i class="fa-solid fa-image"></i><span>Mudar Fundo</span>
-                </button>
+            <button onclick="window.openBannerModal()" class="absolute top-4 right-4 bg-[#131f3d]/70 hover:bg-[#131f3d] text-gray-200 hover:text-white px-3 py-1.5 rounded-xl border border-blue-500/25 text-xs font-medium flex items-center space-x-1.5 backdrop-blur-md cursor-pointer transition z-10">
+                <i class="fa-solid fa-image"></i><span>Mudar Fundo</span>
+            </button>
 
+            <div class="max-w-5xl mx-auto flex flex-col items-center text-center space-y-4 pt-4">
                 <div class="space-y-3 pt-6">
                     <h2 class="text-6xl sm:text-8xl md:text-9xl gabriola-title blue-silver-text tracking-normal">Blue-Moon</h2>
                     <div class="flex items-center justify-center space-x-3 pt-2">
@@ -148,6 +125,43 @@
                 </div>
             </div>
         </header>
+
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+            <section class="flex justify-center">
+                <button onclick="window.openAddModal()" class="w-full sm:w-80 py-3 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold rounded-2xl border border-blue-400/40 shadow-xl flex items-center justify-center space-x-2.5 active:scale-95 cursor-pointer transition">
+                    <i class="fa-solid fa-plus text-sm"></i>
+                    <span class="text-xs font-bold tracking-widest uppercase">ADICIONAR</span>
+                </button>
+            </section>
+
+            <section id="stats-section">
+                <div class="grid grid-cols-2 sm:grid-cols-6 gap-3">
+                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between shadow-xl">
+                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Total</p><h3 class="text-2xl font-extrabold text-white mt-0.5" id="stat-acervo">0</h3></div>
+                        <div class="w-9 h-9 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center text-blue-300"><i class="fa-solid fa-layer-group text-sm"></i></div>
+                    </div>
+                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
+                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Concluídos</p><h3 class="text-2xl font-bold text-emerald-400 mt-0.5" id="stat-completed">0</h3></div>
+                        <div class="w-9 h-9 bg-emerald-500/20 border border-emerald-500/30 rounded-xl flex items-center justify-center text-emerald-400"><i class="fa-solid fa-circle-check text-sm"></i></div>
+                    </div>
+                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
+                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Em Andamento</p><h3 class="text-2xl font-bold text-amber-400 mt-0.5" id="stat-in-progress">0</h3></div>
+                        <div class="w-9 h-9 bg-amber-500/20 border border-amber-500/30 rounded-xl flex items-center justify-center text-amber-400"><i class="fa-solid fa-spinner text-sm"></i></div>
+                    </div>
+                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
+                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Quero Ver</p><h3 class="text-2xl font-bold text-sky-400 mt-0.5" id="stat-planned">0</h3></div>
+                        <div class="w-9 h-9 bg-sky-500/20 border border-sky-500/30 rounded-xl flex items-center justify-center text-sky-400"><i class="fa-solid fa-bookmark text-sm"></i></div>
+                    </div>
+                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
+                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Abandonados</p><h3 class="text-2xl font-bold text-rose-400 mt-0.5" id="stat-abandoned">0</h3></div>
+                        <div class="w-9 h-9 bg-rose-500/20 border border-rose-500/30 rounded-xl flex items-center justify-center text-rose-400"><i class="fa-solid fa-ban text-sm"></i></div>
+                    </div>
+                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
+                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Favoritos</p><h3 class="text-2xl font-bold text-rose-400 mt-0.5" id="stat-favorites">0</h3></div>
+                        <div class="w-9 h-9 bg-rose-500/20 border border-rose-500/30 rounded-xl flex items-center justify-center text-rose-400"><i class="fa-solid fa-heart text-sm"></i></div>
+                    </div>
+                </div>
+            </section>
 
             <section class="glass-card p-4 rounded-2xl flex flex-col sm:flex-row gap-3 items-center justify-between">
                 <div class="relative w-full sm:w-1/2">
@@ -239,6 +253,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { initializeFirestore, persistentLocalCache, collection, addDoc, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
         const firebaseConfig = {
             apiKey: "AIzaSyD_bk-Qu1vjejNGeGlprEs7isWacxpneTo",
             authDomain: "blue-moon-jscr8785.firebaseapp.com",
@@ -250,8 +266,41 @@
 
         const app = initializeApp(firebaseConfig);
         const db = initializeFirestore(app, {
-    localCache: persistentLocalCache()
-});
+            localCache: persistentLocalCache()
+        });
+
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+        const loginBtn = document.getElementById('loginBtn');
+        const loginBtnText = document.getElementById('loginBtnText');
+        const userInfo = document.getElementById('userInfo');
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (loginBtnText) loginBtnText.textContent = 'Sair';
+                if(userInfo) {
+                    userInfo.style.display = 'inline';
+                    userInfo.textContent = `Olá, ${user.displayName ? user.displayName.split(' ')[0] : 'Utilizador'}`;
+                }
+            } else {
+                if (loginBtnText) loginBtnText.textContent = 'Entrar com Google';
+                if(userInfo) userInfo.style.display = 'none';
+            }
+        });
+
+        if (loginBtn) {
+            loginBtn.addEventListener('click', async () => {
+                if (auth.currentUser) {
+                    await signOut(auth);
+                } else {
+                    try {
+                        await signInWithPopup(auth, provider);
+                    } catch (error) {
+                        console.error("Erro no login:", error);
+                    }
+                }
+            });
+        }
 
         let mediaItems = [];
         let currentCategory = 'all';
@@ -397,43 +446,9 @@
             }
         };
 
-      // --- INÍCIO FIREBASE AUTH ---
-  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-  
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-  const loginBtn = document.getElementById('loginBtn');
-  const userInfo = document.getElementById('userInfo');
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      loginBtn.textContent = '🚪 Sair';
-      if(userInfo) {
-        userInfo.style.display = 'inline';
-        userInfo.textContent = `Olá, ${user.displayName.split(' ')[0]}`;
-      }
-    } else {
-      loginBtn.textContent = '🔑 Entrar';
-      if(userInfo) userInfo.style.display = 'none';
-    }
-  });
-
-  if (loginBtn) {
-    loginBtn.addEventListener('click', async () => {
-      if (auth.currentUser) {
-        await signOut(auth);
-      } else {
-        try {
-          await signInWithPopup(auth, provider);
-        } catch (error) {
-          console.error("Erro no login:", error);
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/Blue-Moon/sw.js');
         }
-      }
-    });
-  }
-  // --- FIM FIREBASE AUTH ---
-
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/Blue-Moon/sw.js');
-  }
-</script>
+    </script>
+</body>
+</html>
