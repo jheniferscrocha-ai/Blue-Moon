@@ -5,18 +5,13 @@
   "start_url": "/Blue-Moon/",
   "scope": "/Blue-Moon/",
   "display": "standalone",
-  "background_color": "#07122b",
-  "theme_color": "#07122b",
+  "background_color": "#0b1329",
+  "theme_color": "#0b1329",
   "icons": [
     {
-      "src": "/Blue-Moon/lua-icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "/Blue-Moon/lua-icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%232563eb'/><text x='50' y='65' font-size='40' font-weight='bold' text-anchor='middle' fill='white'>BM</text></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
     }
   ]
 }
