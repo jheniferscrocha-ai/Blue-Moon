@@ -217,17 +217,18 @@
                     </label>
                 </div>
 
-                <!-- Título -->
-                <div>
-                    <label class="block text-xs font-semibold text-blue-200 mb-1">Título *</label>
-                    <input type="text" id="form-title" required class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
-                </div>
-
-                <!-- Título Original e Status lado a lado -->
+                <!-- Categoria ao lado de Status (antes de Título) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Título Original</label>
-                        <input type="text" id="form-original-title" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Categoria *</label>
+                        <select id="form-category" required onchange="window.toggleCategoryFields()" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                            <option value="anime">Anime</option>
+                            <option value="short">Curta</option>
+                            <option value="dorama">Drama</option>
+                            <option value="movie">Filme</option>
+                            <option value="book">Livro</option>
+                            <option value="series">Série</option>
+                        </select>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-blue-200 mb-1">Status</label>
@@ -240,29 +241,28 @@
                     </div>
                 </div>
 
-                <!-- Sinopse (debaxo de Título Original e Status) -->
+                <!-- Título -->
+                <div>
+                    <label class="block text-xs font-semibold text-blue-200 mb-1">Título *</label>
+                    <input type="text" id="form-title" required class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                </div>
+
+                <!-- Título Original -->
+                <div>
+                    <label class="block text-xs font-semibold text-blue-200 mb-1">Título Original</label>
+                    <input type="text" id="form-original-title" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                </div>
+
+                <!-- Sinopse -->
                 <div>
                     <label class="block text-xs font-semibold text-blue-200 mb-1">Sinopse</label>
                     <textarea id="form-synopsis" rows="2" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl p-3 text-gray-200"></textarea>
                 </div>
 
-                <!-- Género ao lado da Categoria -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Género</label>
-                        <input type="text" id="form-genre" placeholder="Ex: Fantasia, Romance..." class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Categoria *</label>
-                        <select id="form-category" required onchange="window.toggleCategoryFields()" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
-                            <option value="anime">Anime</option>
-                            <option value="short">Curta</option>
-                            <option value="dorama">Drama</option>
-                            <option value="movie">Filme</option>
-                            <option value="book">Livro</option>
-                            <option value="series">Série</option>
-                        </select>
-                    </div>
+                <!-- Género -->
+                <div>
+                    <label class="block text-xs font-semibold text-blue-200 mb-1">Género</label>
+                    <input type="text" id="form-genre" placeholder="Ex: Fantasia, Romance..." class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
                 </div>
 
                 <!-- Data de Lançamento (Dia/Mês/Ano) ao lado da Data de Visualização -->
@@ -500,9 +500,9 @@
             const newItem = {
                 cover: finalCover,
                 category: cat,
+                status: document.getElementById('form-status').value,
                 title: document.getElementById('form-title').value,
                 originalTitle: document.getElementById('form-original-title').value,
-                status: document.getElementById('form-status').value,
                 genre: document.getElementById('form-genre').value,
                 releaseDate: document.getElementById('form-release-date').value,
                 author: cat === 'book' ? document.getElementById('form-author').value : '',
