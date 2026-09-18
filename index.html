@@ -41,14 +41,48 @@
     </style>
 </head>
     
-<body class="min-h-screen flex flex-col relative overflow...">
-  <!-- Botão de login discreto -->
-  <div style="position:fixed; top:10px; right:10px; z-index:999; display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:flex-end;">
-  <span id="userInfo" style="color:#fff; font-size:12px; display:none; background:rgba(0,0,0,0.6); padding:6px 10px; border-radius:12px;"></span>
-  <button id="loginBtn" style="background:rgba(0,0,0,0.6); color:#fff; border:1px solid rgba(255,255,255,0.2); padding:6px 12px; border-radius:20px; font-size:12px; cursor:pointer;">
-    🔑 Entrar
-  </button>
-</div>
+<body class="min-h-screen flex flex-col relative overflow-x-hidden pt-12">
+    <!-- BARRA SUPERIOR DE AUTENTICAÇÃO (Fixa no topo absoluto) -->
+    <div id="auth-bar" class="fixed top-0 left-0 right-0 h-10 bg-[#0b1329]/90 backdrop-blur-md border-b border-blue-900/40 z-[1001] flex items-center justify-end px-4 space-x-3 text-xs">
+        <span id="userInfo" style="display:none;" class="text-blue-200 font-medium"></span>
+        <button id="loginBtn" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded-lg font-semibold transition cursor-pointer flex items-center space-x-1.5 shadow-md">
+            <i class="fa-solid fa-user-circle"></i>
+            <span id="loginBtnText">Entrar com Google</span>
+        </button>
+    </div>
+
+    <div id="sidebar-backdrop" onclick="window.closeSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[998] hidden"></div>
+
+    <!-- MENU LATERAL FLUTUANTE -->
+    <aside id="sidebar-drawer" ...>
+        <!-- o teu conteúdo doaside atual -->
+    </aside>
+
+    <div class="flex-1 flex flex-col min-w-0">
+        <!-- HEADER / BANNER -->
+        <header id="hero-header" class="hero-banner relative transition-all duration-500 py-20 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-white/10 mt-10">
+            <!-- Botão Menu (à esquerda, sem colisão) -->
+            <button onclick="window.openSidebar()" class="absolute top-4 left-4 bg-[#131f3d]/70 hover:bg-[#131f3d] text-gray-200 hover:text-white px-3.5 py-2 rounded-xl border border-blue-500/25 text-xs font-medium flex items-center space-x-2 backdrop-blur-md cursor-pointer transition shadow-lg z-10">
+                <i class="fa-solid fa-bars text-sm"></i><span class="font-semibold tracking-wider">MENU</span>
+            </button>
+
+            <!-- Botão Mudar Fundo (à direita, sem colisão) -->
+            <button onclick="window.openBannerModal()" class="absolute top-4 right-4 bg-[#131f3d]/70 hover:bg-[#131f3d] text-gray-200 hover:text-white px-3 py-1.5 rounded-xl border border-blue-500/25 text-xs font-medium flex items-center space-x-1.5 backdrop-blur-md cursor-pointer transition z-10">
+                <i class="fa-solid fa-image"></i><span>Mudar Fundo</span>
+            </button>
+
+            <!-- Resto do banner (título Blue-Moon, etc.) -->
+            <div class="max-w-5xl mx-auto flex flex-col items-center text-center space-y-4 pt-4">
+                <div class="space-y-3 pt-6">
+                    <h2 class="text-6xl sm:text-8xl md:text-9xl gabriola-title blue-silver-text tracking-normal">Blue-Moon</h2>
+                    <div class="flex items-center justify-center space-x-3 pt-2">
+                        <span class="h-[1px] w-12 bg-gradient-to-r from-transparent to-blue-400/60"></span>
+                        <p class="text-xs sm:text-sm font-medium silver-subtext uppercase">SANCTUARY OF STORIES</p>
+                        <span class="h-[1px] w-12 bg-gradient-to-l from-transparent to-blue-400/60"></span>
+                    </div>
+                </div>
+            </div>
+        </header>
 
   <div id="sidebar-backdrop"...>
     
