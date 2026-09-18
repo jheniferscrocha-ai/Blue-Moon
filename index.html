@@ -265,18 +265,6 @@
                     <input type="text" id="form-genre" placeholder="Ex: Fantasia, Romance..." class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
                 </div>
 
-                <!-- Data de Lançamento (Dia/Mês/Ano) ao lado da Data de Visualização -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Data de Lançamento (Dia/Mês/Ano)</label>
-                        <input type="date" id="form-release-date" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Data de Visualização</label>
-                        <input type="date" id="form-watch-date" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
-                    </div>
-                </div>
-
                 <!-- Campos Dinâmicos (Autor / Diretor / Criador / Temporada / Episódios / OVAs) -->
                 <div id="dynamic-fields-container" class="space-y-3 p-3.5 rounded-xl bg-blue-950/30 border border-blue-900/40">
                     <div id="field-author" class="hidden">
@@ -304,6 +292,18 @@
                             <label class="block text-xs font-semibold text-blue-200 mb-1">OVAs</label>
                             <input type="number" id="form-ovas" min="0" value="0" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
                         </div>
+                    </div>
+                </div>
+
+                <!-- Data de Lançamento (Dia/Mês/Ano) ao lado da Data de Visualização (agora após os campos dinâmicos) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Data de Lançamento (Dia/Mês/Ano)</label>
+                        <input type="date" id="form-release-date" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Data de Visualização</label>
+                        <input type="date" id="form-watch-date" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
                     </div>
                 </div>
 
@@ -590,13 +590,13 @@
             if (item.originalTitle) extraInfo += `<p><strong>Título Original:</strong> ${item.originalTitle}</p>`;
             if (item.status) extraInfo += `<p><strong>Status:</strong> ${item.status}</p>`;
             if (item.genre) extraInfo += `<p><strong>Género:</strong> ${item.genre}</p>`;
-            if (item.releaseDate) extraInfo += `<p><strong>Data de Lançamento:</strong> ${item.releaseDate}</p>`;
             if (item.author) extraInfo += `<p><strong>Autor:</strong> ${item.author}</p>`;
             if (item.director) extraInfo += `<p><strong>Diretor:</strong> ${item.director}</p>`;
             if (item.creator) extraInfo += `<p><strong>Criador:</strong> ${item.creator}</p>`;
             if (item.season) extraInfo += `<p><strong>Temporada:</strong> ${item.season}</p>`;
             if (item.episodes) extraInfo += `<p><strong>Episódios:</strong> ${item.episodes}</p>`;
             if (item.ovas) extraInfo += `<p><strong>OVAs:</strong> ${item.ovas}</p>`;
+            if (item.releaseDate) extraInfo += `<p><strong>Data de Lançamento:</strong> ${item.releaseDate}</p>`;
             if (item.watchDate) extraInfo += `<p><strong>Visto em:</strong> ${item.watchDate}</p>`;
 
             document.getElementById('details-content').innerHTML = `
