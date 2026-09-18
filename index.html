@@ -201,20 +201,27 @@
 
     <!-- MODAL FORMULÁRIO (CADASTRO COMPLETO) -->
     <div id="modal-add-edit" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-3 overflow-y-auto">
-        <div class="glass-card w-full max-w-2xl rounded-2xl border border-blue-500/30 shadow-2xl modal-animate-in max-h-[90vh] flex flex-col overflow-hidden my-auto">
+        <div class="glass-card w-full max-w-2xl rounded-2xl border border-blue-500/30 shadow-2xl modal-animate-in max-h-[92vh] flex flex-col overflow-hidden my-auto">
             <div class="px-5 py-4 border-b border-blue-900/40 flex items-center justify-between bg-[#0e1738]/60">
                 <h3 class="text-base font-bold text-white"><i class="fa-solid fa-pen-to-square text-blue-400 mr-2"></i>Cadastrar Obra</h3>
                 <button type="button" onclick="window.closeAddModal()" class="text-gray-300 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form id="media-form" onsubmit="window.saveMedia(event)" class="p-5 overflow-y-auto space-y-4 flex-1">
-                <div>
-                    <label class="block text-xs font-semibold text-blue-200 mb-1">URL da Capa</label>
-                    <input type="url" id="form-cover" placeholder="https://..." class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                <!-- Capa (URL ou Ficheiro) -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-semibold text-blue-200">Capa da Obra (URL ou Enviar Ficheiro)</label>
+                    <input type="url" id="form-cover-url" placeholder="https://..." class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200 mb-1">
+                    <label class="flex items-center justify-between border border-dashed border-blue-500/40 bg-[#0e1738]/40 rounded-xl px-3 py-2 cursor-pointer hover:border-blue-400">
+                        <span id="cover-file-label" class="text-xs text-blue-300">Carregar foto do PC/Telemóvel...</span>
+                        <input type="file" id="form-cover-file" accept="image/*" class="hidden" onchange="window.handleCoverFile(event)">
+                    </label>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+                <!-- Categoria & Título -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-blue-200 mb-1">Categoria *</label>
-                        <select id="form-category" required class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                        <select id="form-category" required onchange="window.toggleCategoryFields()" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
                             <option value="anime">Anime</option>
                             <option value="short">Curta</option>
                             <option value="dorama">Drama</option>
@@ -223,16 +230,18 @@
                             <option value="series">Série</option>
                         </select>
                     </div>
-                    <div>
+                    <div class="sm:col-span-2">
                         <label class="block text-xs font-semibold text-blue-200 mb-1">Título *</label>
                         <input type="text" id="form-title" required class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
                     </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-blue-200 mb-1">Sinopse</label>
-                    <textarea id="form-synopsis" rows="2" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl p-3 text-gray-200"></textarea>
-                </div>
+
+                <!-- Título Original e Status logo abaixo -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Título Original</label>
+                        <input type="text" id="form-original-title" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                    </div>
                     <div>
                         <label class="block text-xs font-semibold text-blue-200 mb-1">Status</label>
                         <select id="form-status" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
@@ -242,15 +251,80 @@
                             <option value="abandoned">Abandonado</option>
                         </select>
                     </div>
+                </div>
+
+                <!-- Género & Ano de Lançamento -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Nota (0-10)</label>
-                        <input type="number" id="form-rating" min="0" max="10" step="0.5" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Género</label>
+                        <input type="text" id="form-genre" placeholder="Ex: Fantasia, Romance..." class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Ano de Lançamento</label>
+                        <input type="number" id="form-release-year" placeholder="2026" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
                     </div>
                 </div>
-                <div class="flex items-center space-x-2 bg-[#0e1738]/50 p-3.5 rounded-xl border border-blue-900/30">
-                    <input type="checkbox" id="form-favorite" class="w-4 h-4 rounded text-blue-600 bg-[#0e1738] cursor-pointer">
-                    <span class="text-xs font-semibold text-blue-200 cursor-pointer" onclick="document.getElementById('form-favorite').click()">Marcar como Favorito</span>
+
+                <!-- Campos Dinâmicos (Autor / Diretor / Criador / Temporada / Episódios / OVAs) -->
+                <div id="dynamic-fields-container" class="space-y-3 p-3.5 rounded-xl bg-blue-950/30 border border-blue-900/40">
+                    <div id="field-author" class="hidden">
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Autor</label>
+                        <input type="text" id="form-author" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                    </div>
+                    <div id="field-director" class="hidden">
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Diretor</label>
+                        <input type="text" id="form-director" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                    </div>
+                    <div id="field-creator" class="hidden">
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Criador</label>
+                        <input type="text" id="form-creator" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                    </div>
+                    <div id="field-seasons-eps" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-blue-200 mb-1">Temporada</label>
+                            <input type="number" id="form-season" min="1" value="1" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-blue-200 mb-1">Nº de Episódios</label>
+                            <input type="number" id="form-episodes" min="0" value="0" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                        </div>
+                        <div id="field-ovas-wrapper" class="hidden">
+                            <label class="block text-xs font-semibold text-blue-200 mb-1">OVAs</label>
+                            <input type="number" id="form-ovas" min="0" value="0" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Sinopse -->
+                <div>
+                    <label class="block text-xs font-semibold text-blue-200 mb-1">Sinopse</label>
+                    <textarea id="form-synopsis" rows="2" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl p-3 text-gray-200"></textarea>
+                </div>
+
+                <!-- Data de Visualização -->
+                <div>
+                    <label class="block text-xs font-semibold text-blue-200 mb-1">Data de Visualização</label>
+                    <input type="date" id="form-watch-date" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                </div>
+
+                <!-- Nota (0.5 steps) & Favorito Lado a Lado -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+                    <div>
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Nota (0 a 10 - de 0.5 em 0.5)</label>
+                        <input type="number" id="form-rating" min="0" max="10" step="0.5" placeholder="8.5" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                    </div>
+                    <div class="flex items-center space-x-2.5 bg-[#0e1738]/50 px-4 py-2.5 rounded-xl border border-blue-900/30 h-full mt-4 sm:mt-5 cursor-pointer" onclick="document.getElementById('form-favorite').click()">
+                        <input type="checkbox" id="form-favorite" class="w-4 h-4 rounded text-blue-600 bg-[#0e1738] cursor-pointer">
+                        <span class="text-xs font-semibold text-blue-200">Marcar como Favorito ❤️</span>
+                    </div>
+                </div>
+
+                <!-- Resenha/Opinião -->
+                <div>
+                    <label class="block text-xs font-semibold text-blue-200 mb-1">Resenha / Opinião</label>
+                    <textarea id="form-review" rows="3" placeholder="O que achaste da obra?" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl p-3 text-gray-200"></textarea>
+                </div>
+
                 <div class="pt-3 border-t border-blue-900/40 flex justify-end space-x-2">
                     <button type="button" onclick="window.closeAddModal()" class="px-4 py-2 bg-blue-950/60 text-gray-200 text-xs font-semibold rounded-xl cursor-pointer">Cancelar</button>
                     <button type="submit" class="px-4 py-2 bg-[#2563eb] text-white text-xs font-semibold rounded-xl cursor-pointer">Salvar Obra</button>
@@ -263,7 +337,7 @@
     <div id="modal-details" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-3 overflow-y-auto">
         <div class="glass-card w-full max-w-lg rounded-2xl border border-blue-500/30 shadow-2xl modal-animate-in max-h-[90vh] flex flex-col overflow-hidden my-auto">
             <div class="px-5 py-4 border-b border-blue-900/40 flex items-center justify-between bg-[#0e1738]/60">
-                <h3 class="text-base font-bold text-white">Detalhes</h3>
+                <h3 class="text-base font-bold text-white">Detalhes da Obra</h3>
                 <button type="button" onclick="window.closeDetailsModal()" class="text-gray-300 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div id="details-content" class="p-5 overflow-y-auto space-y-4 flex-1"></div>
@@ -324,6 +398,7 @@
 
         let mediaItems = [];
         let currentCategory = 'all';
+        let tempCoverBase64 = '';
 
         const savedBanner = localStorage.getItem('blue_moon_banner_bg');
         if (savedBanner) { document.documentElement.style.setProperty('--banner-bg', `url('${savedBanner}')`); }
@@ -338,6 +413,47 @@
         }, (err) => {
             console.warn("Modo offline ativo:", err);
         });
+
+        window.toggleCategoryFields = () => {
+            const cat = document.getElementById('form-category').value;
+            const authorBlock = document.getElementById('field-author');
+            const directorBlock = document.getElementById('field-director');
+            const creatorBlock = document.getElementById('field-creator');
+            const seasonsEpsBlock = document.getElementById('field-seasons-eps');
+            const ovasWrapper = document.getElementById('field-ovas-wrapper');
+
+            authorBlock.classList.add('hidden');
+            directorBlock.classList.add('hidden');
+            creatorBlock.classList.add('hidden');
+            seasonsEpsBlock.classList.add('hidden');
+            ovasWrapper.classList.add('hidden');
+
+            if (cat === 'book') {
+                authorBlock.classList.remove('hidden');
+            } else if (cat === 'short' || cat === 'movie') {
+                directorBlock.classList.remove('hidden');
+            } else if (cat === 'series') {
+                directorBlock.classList.remove('hidden');
+                seasonsEpsBlock.classList.remove('hidden');
+            } else if (cat === 'dorama') {
+                seasonsEpsBlock.classList.remove('hidden');
+            } else if (cat === 'anime') {
+                creatorBlock.classList.remove('hidden');
+                seasonsEpsBlock.classList.remove('hidden');
+                ovasWrapper.classList.remove('hidden');
+            }
+        };
+
+        window.handleCoverFile = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            document.getElementById('cover-file-label').innerText = file.name;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                tempCoverBase64 = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
 
         window.openBannerModal = () => document.getElementById('modal-banner').classList.remove('hidden');
         window.closeBannerModal = () => document.getElementById('modal-banner').classList.add('hidden');
@@ -360,7 +476,12 @@
         window.openSidebar = () => { document.getElementById('sidebar-drawer').classList.remove('-translate-x-full'); document.getElementById('sidebar-backdrop').classList.remove('hidden'); };
         window.closeSidebar = () => { document.getElementById('sidebar-drawer').classList.add('-translate-x-full'); document.getElementById('sidebar-backdrop').classList.add('hidden'); };
 
-        window.openAddModal = () => document.getElementById('modal-add-edit').classList.remove('hidden');
+        window.openAddModal = () => {
+            tempCoverBase64 = '';
+            document.getElementById('cover-file-label').innerText = 'Carregar foto do PC/Telemóvel...';
+            document.getElementById('modal-add-edit').classList.remove('hidden');
+            window.toggleCategoryFields();
+        };
         window.closeAddModal = () => document.getElementById('modal-add-edit').classList.add('hidden');
 
         window.switchCategory = (cat) => {
@@ -372,19 +493,35 @@
 
         window.saveMedia = async (e) => {
             e.preventDefault();
+            const cat = document.getElementById('form-category').value;
+            const coverUrl = document.getElementById('form-cover-url').value.trim();
+            const finalCover = tempCoverBase64 || coverUrl || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=600';
+
             const newItem = {
-                cover: document.getElementById('form-cover').value,
-                category: document.getElementById('form-category').value,
+                cover: finalCover,
+                category: cat,
                 title: document.getElementById('form-title').value,
-                synopsis: document.getElementById('form-synopsis').value,
+                originalTitle: document.getElementById('form-original-title').value,
                 status: document.getElementById('form-status').value,
+                genre: document.getElementById('form-genre').value,
+                releaseYear: document.getElementById('form-release-year').value,
+                author: cat === 'book' ? document.getElementById('form-author').value : '',
+                director: (cat === 'short' || cat === 'movie' || cat === 'series') ? document.getElementById('form-director').value : '',
+                creator: cat === 'anime' ? document.getElementById('form-creator').value : '',
+                season: ['anime', 'series', 'dorama'].includes(cat) ? document.getElementById('form-season').value : '',
+                episodes: ['anime', 'series', 'dorama'].includes(cat) ? document.getElementById('form-episodes').value : '',
+                ovas: cat === 'anime' ? document.getElementById('form-ovas').value : '',
+                synopsis: document.getElementById('form-synopsis').value,
+                watchDate: document.getElementById('form-watch-date').value,
                 rating: document.getElementById('form-rating').value,
                 favorite: document.getElementById('form-favorite').checked,
+                review: document.getElementById('form-review').value,
                 createdAt: Date.now()
             };
             try {
                 await addDoc(collection(db, 'media_obras'), newItem);
                 document.getElementById('media-form').reset();
+                tempCoverBase64 = '';
                 window.closeAddModal();
             } catch (err) {
                 console.error("Erro ao salvar:", err);
@@ -433,11 +570,12 @@
                 card.onclick = () => window.openDetailsModal(item.id);
                 card.innerHTML = `
                     <div class="relative aspect-[2/3] bg-blue-950/40">
-                        <img class="w-full h-full object-cover" src="${item.cover || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=600'}" alt="${item.title}">
+                        <img class="w-full h-full object-cover" src="${item.cover}" alt="${item.title}">
                         ${item.favorite ? '<span class="absolute top-2 right-2 text-rose-400 text-sm drop-shadow-md">❤️</span>' : ''}
                     </div>
                     <div class="p-3 flex-1 flex flex-col justify-between">
                         <h4 class="font-bold text-sm text-white truncate">${item.title}</h4>
+                        ${item.rating ? `<span class="text-[10px] text-amber-400 font-semibold mt-1">★ ${item.rating} / 10</span>` : ''}
                     </div>
                 `;
                 grid.appendChild(card);
@@ -447,15 +585,31 @@
         window.openDetailsModal = (id) => {
             const item = mediaItems.find(i => i.id === id);
             if (!item) return;
+
+            let extraInfo = '';
+            if (item.originalTitle) extraInfo += `<p><strong>Título Original:</strong> ${item.originalTitle}</p>`;
+            if (item.status) extraInfo += `<p><strong>Status:</strong> ${item.status}</p>`;
+            if (item.genre) extraInfo += `<p><strong>Género:</strong> ${item.genre}</p>`;
+            if (item.releaseYear) extraInfo += `<p><strong>Ano:</strong> ${item.releaseYear}</p>`;
+            if (item.author) extraInfo += `<p><strong>Autor:</strong> ${item.author}</p>`;
+            if (item.director) extraInfo += `<p><strong>Diretor:</strong> ${item.director}</p>`;
+            if (item.creator) extraInfo += `<p><strong>Criador:</strong> ${item.creator}</p>`;
+            if (item.season) extraInfo += `<p><strong>Temporada:</strong> ${item.season}</p>`;
+            if (item.episodes) extraInfo += `<p><strong>Episódios:</strong> ${item.episodes}</p>`;
+            if (item.ovas) extraInfo += `<p><strong>OVAs:</strong> ${item.ovas}</p>`;
+            if (item.watchDate) extraInfo += `<p><strong>Visto em:</strong> ${item.watchDate}</p>`;
+
             document.getElementById('details-content').innerHTML = `
-                <div class="flex gap-4">
-                    <img src="${item.cover || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=600'}" class="w-24 h-36 object-cover rounded-xl border border-blue-500/30">
-                    <div class="space-y-2 flex-1">
-                        <h4 class="text-lg font-extrabold text-white">${item.title}</h4>
-                        <p class="text-xs text-blue-300 uppercase font-semibold">Categoria: ${item.category} | Nota: ${item.rating || 'N/A'}</p>
-                        <p class="text-xs text-blue-200/90 leading-relaxed">${item.synopsis || 'Sem sinopse cadastrada.'}</p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <img src="${item.cover}" class="w-28 h-40 object-cover rounded-xl border border-blue-500/30 mx-auto sm:mx-0">
+                    <div class="space-y-1.5 flex-1 text-xs">
+                        <h4 class="text-base font-extrabold text-white">${item.title} ${item.favorite ? '❤️' : ''}</h4>
+                        <p class="text-blue-300 uppercase font-semibold">Categoria: ${item.category} ${item.rating ? `| Nota: ${item.rating}/10` : ''}</p>
+                        <div class="text-blue-200/80 space-y-0.5 pt-1">${extraInfo}</div>
                     </div>
                 </div>
+                ${item.synopsis ? `<div class="space-y-1"><strong class="text-xs text-blue-200">Sinopse:</strong><p class="text-xs text-blue-200/90 leading-relaxed bg-[#0e1738]/50 p-2.5 rounded-xl border border-blue-900/30">${item.synopsis}</p></div>` : ''}
+                ${item.review ? `<div class="space-y-1"><strong class="text-xs text-blue-200">Resenha / Opinião:</strong><p class="text-xs text-amber-200/90 leading-relaxed bg-[#0e1738]/50 p-2.5 rounded-xl border border-blue-900/30 italic">"${item.review}"</p></div>` : ''}
                 <div class="pt-3 border-t border-blue-900/40 flex justify-between">
                     <button onclick="window.deleteMedia('${item.id}')" class="px-4 py-2 bg-rose-600/20 text-rose-300 text-xs font-semibold rounded-xl cursor-pointer">Excluir</button>
                     <button onclick="window.closeDetailsModal()" class="px-4 py-2 bg-blue-950/60 text-gray-200 text-xs font-semibold rounded-xl cursor-pointer">Fechar</button>
