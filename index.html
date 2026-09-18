@@ -403,7 +403,5 @@
         };
 
       if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/Blue-Moon/sw.js')
-        .then(() => console.log('SW registado!'))
-        .catch(err => console.error('Erro SW:', err));
+    navigator.serviceWorker.register('/Blue-Moon/sw.js');
 }
