@@ -337,7 +337,7 @@
                 <!-- Data de Lançamento & Data de Visualização -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Data de Lançamento (Dia/Mês/Ano)</label>
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Data de Lançamento</label>
                         <input type="date" id="form-release-date" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
                     </div>
                     <div>
@@ -652,7 +652,6 @@
             const item = mediaItems.find(i => i.id === id);
             if (!item) return;
 
-            // Compatibilidade com cadastros antigos que tinham 'genre' em string única ou novo 'genres' array
             const genresList = item.genres || (item.genre ? [item.genre] : []);
             const authorsList = item.authors || (item.author ? [item.author] : []);
             const directorsList = item.directors || (item.director ? [item.director] : []);
