@@ -260,7 +260,7 @@
                     <textarea id="form-synopsis" rows="2" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl p-3 text-gray-200"></textarea>
                 </div>
 
-                <!-- Gênero e Duração lado a lado -->
+                <!-- Gênero e Duração/Páginas lado a lado -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-blue-200 mb-1">Gênero</label>
@@ -274,10 +274,10 @@
                     </div>
                     
                     <div>
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Duração</label>
+                        <label id="form-duration-label" class="block text-xs font-semibold text-blue-200 mb-1">Duração</label>
                         <div class="relative">
                             <input type="number" id="form-duration" min="0" placeholder="Ex: 120" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 pr-14 text-gray-200">
-                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-blue-400 font-medium">min</span>
+                            <span id="form-duration-unit" class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-blue-400 font-medium">min</span>
                         </div>
                     </div>
                 </div>
@@ -557,6 +557,9 @@
             const creatorBlock = document.getElementById('field-creator');
             const seasonsEpsBlock = document.getElementById('field-seasons-eps');
             const ovasWrapper = document.getElementById('field-ovas-wrapper');
+            const durationLabel = document.getElementById('form-duration-label');
+            const durationUnit = document.getElementById('form-duration-unit');
+            const durationInput = document.getElementById('form-duration');
 
             authorBlock.classList.add('hidden');
             directorBlock.classList.add('hidden');
@@ -566,7 +569,16 @@
 
             if (cat === 'book') {
                 authorBlock.classList.remove('hidden');
-            } else if (cat === 'short' || cat === 'movie') {
+                durationLabel.innerText = 'Páginas';
+                durationUnit.innerText = 'pág';
+                durationInput.placeholder = 'Ex: 350';
+            } else {
+                durationLabel.innerText = 'Duração';
+                durationUnit.innerText = 'min';
+                durationInput.placeholder = 'Ex: 120';
+            }
+
+            if (cat === 'short' || cat === 'movie') {
                 directorBlock.classList.remove('hidden');
             } else if (cat === 'series') {
                 directorBlock.classList.remove('hidden');
@@ -801,7 +813,13 @@
             if (item.season) extraInfo += `<p><strong>Temporada:</strong> ${item.season}</p>`;
             if (item.episodes) extraInfo += `<p><strong>Episódios:</strong> ${item.episodes}</p>`;
             if (item.ovas) extraInfo += `<p><strong>OVAs:</strong> ${item.ovas}</p>`;
-            if (item.duration) extraInfo += `<p><strong>Duração:</strong> ${item.duration} min</p>`;
+            
+            if (item.duration) {
+                const labelDuração = item.category === 'book' ? 'Páginas' : 'Duração';
+                const unidade = item.category === 'book' ? 'págs' : 'min';
+                extraInfo += `<p><strong>${labelDuração}:</strong> ${item.duration} ${unidade}</p>`;
+            }
+
             if (item.releaseDate) extraInfo += `<p><strong>Data de Lançamento:</strong> ${formatarDataBR(item.releaseDate)}</p>`;
             if (item.watchDate) extraInfo += `<p><strong>Visto em:</strong> ${formatarDataBR(item.watchDate)}</p>`;
 
