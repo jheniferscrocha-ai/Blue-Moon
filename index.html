@@ -1,725 +1,409 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0b1329">
-    <link rel="manifest" href="./manifest.json">
-    <title>Blue-Moon | Sanctuary of Stories</title>
+    <title>Blue-Moon 🌙 Catálogo</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#090d23',
+                        darkCard: '#101736',
+                        accent: {
+                            blue: '#3b82f6',
+                            purple: '#8b5cf6',
+                            gold: '#f59e0b',
+                            rose: '#f43f5e'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b1329; color: #f3f4f6; }
-        .hero-font { font-family: 'Cinzel', serif; letter-spacing: 0.15em; }
-        .gabriola-title { 
-            font-family: 'Comic Sans MS', 'Comic Sans', cursive; 
-            padding: 0 0.2em; 
-            display: inline-block;
-            font-weight: bold;
-        }
-        .hero-banner { 
-            background-image: linear-gradient(to bottom, rgba(11, 19, 41, 0.4), rgba(11, 19, 41, 0.92)), var(--banner-bg, url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1600&auto=format&fit=crop')); 
-            background-size: cover; 
-            background-position: center; 
-        }
-        .glass-card { background: rgba(19, 31, 61, 0.75); backdrop-filter: blur(14px); border: 1px solid rgba(59, 130, 246, 0.2); }
-        .blue-silver-text {
-            background: linear-gradient(135deg, #ffffff 0%, #3b82f6 35%, #60a5fa 50%, #3b82f6 65%, #ffffff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 35px rgba(59, 130, 246, 0.5);
-        }
-        .silver-subtext {
-            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 0.3em;
-        }
-        .modal-animate-in { animation: modalFadeIn 0.2s ease-out forwards; }
-        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.97) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        [x-cloak] { display: none !important; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #090d23; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col relative overflow-x-hidden pt-10">
+<body class="bg-[#090d23] text-gray-100 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
 
-    <!-- BARRA SUPERIOR DE AUTENTICAÇÃO -->
-    <div id="auth-bar" class="fixed top-0 left-0 right-0 h-10 bg-[#0b1329]/95 backdrop-blur-md border-b border-blue-900/40 z-[1001] flex items-center justify-end px-4 space-x-3 text-xs">
-        <span id="userInfo" style="display:none;" class="text-blue-200 font-medium"></span>
-        <button id="loginBtn" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded-lg font-semibold transition cursor-pointer flex items-center space-x-1.5 shadow-md">
-            <i class="fa-solid fa-user-circle"></i>
-            <span id="loginBtnText">Entrar com Google</span>
-        </button>
-    </div>
-
-    <div id="sidebar-backdrop" onclick="window.closeSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[998] hidden"></div>
-
-    <!-- MENU LATERAL FLUTUANTE -->
-    <aside id="sidebar-drawer" class="fixed top-0 left-0 h-full w-72 bg-[#0e1738] border-r border-blue-900/40 z-[999] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
-        <div class="p-5 border-b border-blue-900/30 flex items-center justify-between">
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-[#090d23]/80 backdrop-blur-md border-b border-blue-900/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <i class="fa-solid fa-moon text-blue-400 text-2xl"></i>
-                <h1 class="font-bold text-lg text-white">Blue-Moon</h1>
+                <span class="text-2xl">🌙</span>
+                <h1 class="text-lg font-extrabold bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
+                    Blue-Moon
+                </h1>
             </div>
-            <button onclick="window.closeSidebar()" class="p-2 text-gray-400 hover:text-white rounded-lg cursor-pointer">
-                <i class="fa-solid fa-xmark text-xl"></i>
-            </button>
-        </div>
-
-        <nav class="flex-1 overflow-y-auto p-4 space-y-1">
-            <div class="text-xs font-semibold text-blue-300/70 uppercase tracking-wider px-3 mb-2">Navegação</div>
-            <button onclick="window.switchCategory('all')" id="nav-all" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
-                <div class="flex items-center space-x-3"><i class="fa-solid fa-house w-5 text-center text-blue-400"></i><span>Início</span></div>
-                <span id="badge-all" class="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full font-semibold">0</span>
-            </button>
-            <button onclick="window.switchCategory('favorites')" id="nav-favorites" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
-                <div class="flex items-center space-x-3"><i class="fa-solid fa-heart w-5 text-center text-rose-400"></i><span>Favoritos</span></div>
-                <span id="badge-favorites" class="text-xs bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded-full font-semibold">0</span>
-            </button>
-
-            <div class="text-xs font-semibold text-blue-300/70 uppercase tracking-wider px-3 mt-6 mb-2">Categorias</div>
-            <button onclick="window.switchCategory('anime')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
-                <div class="flex items-center space-x-3"><i class="fa-solid fa-wand-magic-sparkles w-5 text-center text-blue-400"></i><span>Animes</span></div>
-                <span id="badge-anime" class="text-xs bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full">0</span>
-            </button>
-            <button onclick="window.switchCategory('short')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
-                <div class="flex items-center space-x-3"><i class="fa-solid fa-film w-5 text-center text-amber-400"></i><span>Curtas</span></div>
-                <span id="badge-short" class="text-xs bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full">0</span>
-            </button>
-            <button onclick="window.switchCategory('dorama')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
-                <div class="flex items-center space-x-3"><i class="fa-solid fa-tv w-5 text-center text-blue-400"></i><span>Dramas</span></div>
-                <span id="badge-dorama" class="text-xs bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full">0</span>
-            </button>
-            <button onclick="window.switchCategory('movie')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
-                <div class="flex items-center space-x-3"><i class="fa-solid fa-clapperboard w-5 text-center text-red-400"></i><span>Filmes</span></div>
-                <span id="badge-movie" class="text-xs bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full">0</span>
-            </button>
-            <button onclick="window.switchCategory('book')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
-                <div class="flex items-center space-x-3"><i class="fa-solid fa-book w-5 text-center text-emerald-400"></i><span>Livros</span></div>
-                <span id="badge-book" class="text-xs bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full">0</span>
-            </button>
-            <button onclick="window.switchCategory('series')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-200 hover:bg-blue-950/50 cursor-pointer">
-                <div class="flex items-center space-x-3"><i class="fa-solid fa-video w-5 text-center text-cyan-400"></i><span>Séries</span></div>
-                <span id="badge-series" class="text-xs bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full">0</span>
-            </button>
-        </nav>
-    </aside>
-
-    <div class="flex-1 flex flex-col min-w-0">
-        <header id="hero-header" class="hero-banner relative transition-all duration-500 py-20 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-white/10 mt-6">
-            <button onclick="window.openSidebar()" class="absolute top-4 left-4 bg-[#131f3d]/70 hover:bg-[#131f3d] text-gray-200 hover:text-white px-3.5 py-2 rounded-xl border border-blue-500/25 text-xs font-medium flex items-center space-x-2 backdrop-blur-md cursor-pointer transition shadow-lg z-10">
-                <i class="fa-solid fa-bars text-sm"></i><span class="font-semibold tracking-wider">MENU</span>
-            </button>
-
-            <button onclick="window.openBannerModal()" class="absolute top-4 right-4 bg-[#131f3d]/70 hover:bg-[#131f3d] text-gray-200 hover:text-white px-3 py-1.5 rounded-xl border border-blue-500/25 text-xs font-medium flex items-center space-x-1.5 backdrop-blur-md cursor-pointer transition z-10">
-                <i class="fa-solid fa-image"></i><span>Mudar Fundo</span>
-            </button>
-
-            <div class="max-w-5xl mx-auto flex flex-col items-center text-center space-y-4 pt-4">
-                <div class="space-y-3 pt-6">
-                    <h2 class="text-6xl sm:text-8xl md:text-9xl gabriola-title blue-silver-text tracking-normal">Blue-Moon</h2>
-                    <div class="flex items-center justify-center space-x-3 pt-2">
-                        <span class="h-[1px] w-12 bg-gradient-to-r from-transparent to-blue-400/60"></span>
-                        <p class="text-xs sm:text-sm font-medium silver-subtext uppercase">SANCTUARY OF STORIES</p>
-                        <span class="h-[1px] w-12 bg-gradient-to-l from-transparent to-blue-400/60"></span>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-            <section class="flex justify-center">
-                <button onclick="window.openAddModal()" class="w-full sm:w-80 py-3 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold rounded-2xl border border-blue-400/40 shadow-xl flex items-center justify-center space-x-2.5 active:scale-95 cursor-pointer transition">
-                    <i class="fa-solid fa-plus text-sm"></i>
-                    <span class="text-xs font-bold tracking-widest uppercase">ADICIONAR</span>
+            <div class="flex items-center space-x-2">
+                <button onclick="window.openAddModal()" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-blue-600/20 transition cursor-pointer flex items-center space-x-1.5">
+                    <span>+</span>
+                    <span>Adicionar</span>
                 </button>
-            </section>
-
-            <section id="stats-section">
-                <div class="grid grid-cols-2 sm:grid-cols-6 gap-3">
-                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between shadow-xl">
-                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Total</p><h3 class="text-2xl font-extrabold text-white mt-0.5" id="stat-acervo">0</h3></div>
-                        <div class="w-9 h-9 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center text-blue-300"><i class="fa-solid fa-layer-group text-sm"></i></div>
-                    </div>
-                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
-                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Concluídos</p><h3 class="text-2xl font-bold text-emerald-400 mt-0.5" id="stat-completed">0</h3></div>
-                        <div class="w-9 h-9 bg-emerald-500/20 border border-emerald-500/30 rounded-xl flex items-center justify-center text-emerald-400"><i class="fa-solid fa-circle-check text-sm"></i></div>
-                    </div>
-                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
-                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Em Andamento</p><h3 class="text-2xl font-bold text-amber-400 mt-0.5" id="stat-in-progress">0</h3></div>
-                        <div class="w-9 h-9 bg-amber-500/20 border border-amber-500/30 rounded-xl flex items-center justify-center text-amber-400"><i class="fa-solid fa-spinner text-sm"></i></div>
-                    </div>
-                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
-                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Quero Ver</p><h3 class="text-2xl font-bold text-sky-400 mt-0.5" id="stat-planned">0</h3></div>
-                        <div class="w-9 h-9 bg-sky-500/20 border border-sky-500/30 rounded-xl flex items-center justify-center text-sky-400"><i class="fa-solid fa-bookmark text-sm"></i></div>
-                    </div>
-                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
-                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Abandonados</p><h3 class="text-2xl font-bold text-rose-400 mt-0.5" id="stat-abandoned">0</h3></div>
-                        <div class="w-9 h-9 bg-rose-500/20 border border-rose-500/30 rounded-xl flex items-center justify-center text-rose-400"><i class="fa-solid fa-ban text-sm"></i></div>
-                    </div>
-                    <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
-                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Favoritos</p><h3 class="text-2xl font-bold text-rose-400 mt-0.5" id="stat-favorites">0</h3></div>
-                        <div class="w-9 h-9 bg-rose-500/20 border border-rose-500/30 rounded-xl flex items-center justify-center text-rose-400"><i class="fa-solid fa-heart text-sm"></i></div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="glass-card p-4 rounded-2xl flex flex-col sm:flex-row gap-3 items-center justify-between">
-                <div class="relative w-full sm:w-1/2">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-300 text-sm"></i>
-                    <input type="text" id="search-input" oninput="window.renderMediaGrid()" placeholder="Buscar por título..." class="w-full bg-[#0e1738] border border-blue-900/50 text-gray-200 text-sm rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:border-blue-400">
-                </div>
-            </section>
-
-            <section id="media-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"></section>
-
-            <div id="empty-state" class="glass-card p-12 rounded-2xl text-center space-y-2">
-                <i class="fa-solid fa-box-open text-3xl text-blue-400/60"></i>
-                <h4 class="text-base font-bold text-gray-200">Nenhuma obra cadastrada</h4>
-                <p class="text-xs text-blue-200/70">Toque em "ADICIONAR" para inserir uma nova obra no acervo.</p>
             </div>
-        </main>
-    </div>
+        </div>
+    </header>
 
-    <!-- MODAL DE FUNDO -->
-    <div id="modal-banner" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-3">
-        <div class="glass-card w-full max-w-md rounded-2xl border border-blue-500/30 shadow-2xl modal-animate-in p-5 space-y-4">
-            <div class="flex items-center justify-between border-b border-blue-900/40 pb-3">
-                <h3 class="text-base font-bold text-white flex items-center space-x-2"><i class="fa-solid fa-image text-blue-400"></i><span>Alterar Fundo</span></h3>
-                <button type="button" onclick="window.closeBannerModal()" class="text-gray-300 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        
+        <!-- Stats / Resumo simples -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="stats-container">
+            <!-- Preenchido via JS -->
+        </div>
+
+        <!-- Filtros e Busca -->
+        <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between bg-[#101736]/60 p-3 rounded-2xl border border-blue-900/30">
+            <input type="text" id="search-input" placeholder="Pesquisar obra..." oninput="window.handleSearchFilter()" class="bg-[#090d23] text-xs text-white px-3.5 py-2 rounded-xl border border-blue-900/50 focus:outline-none focus:border-blue-500 w-full sm:w-64">
+            
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0" id="category-tabs">
+                <button onclick="window.setCategory('all')" data-cat="all" class="cat-tab px-3 py-1.5 rounded-xl text-xs font-semibold bg-blue-600 text-white cursor-pointer transition shrink-0">Todos</button>
+                <button onclick="window.setCategory('Filme')" data-cat="Filme" class="cat-tab px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#090d23] text-blue-200/70 hover:text-white cursor-pointer transition shrink-0">Filmes</button>
+                <button onclick="window.setCategory('Série')" data-cat="Série" class="cat-tab px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#090d23] text-blue-200/70 hover:text-white cursor-pointer transition shrink-0">Séries</button>
+                <button onclick="window.setCategory('Livro')" data-cat="Livro" class="cat-tab px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#090d23] text-blue-200/70 hover:text-white cursor-pointer transition shrink-0">Livros</button>
+                <button onclick="window.setCategory('Mangá')" data-cat="Mangá" class="cat-tab px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#090d23] text-blue-200/70 hover:text-white cursor-pointer transition shrink-0">Mangás</button>
             </div>
-            <label class="flex flex-col items-center justify-center border-2 border-dashed border-blue-500/40 hover:border-blue-400 bg-[#0e1738]/50 rounded-xl p-5 cursor-pointer text-center">
-                <i class="fa-solid fa-cloud-arrow-up text-2xl text-blue-400 mb-2"></i>
-                <span id="banner-file-name" class="text-xs text-gray-300 font-medium">Escolher arquivo</span>
-                <input type="file" id="form-banner-file" accept="image/*" class="hidden" onchange="window.previewBannerFileName(event)">
-            </label>
-            <div class="flex justify-end space-x-2 pt-2">
-                <button type="button" onclick="window.closeBannerModal()" class="px-4 py-2 bg-blue-950/60 text-gray-200 text-xs font-semibold rounded-xl cursor-pointer">Cancelar</button>
-                <button type="button" onclick="window.saveBannerImageFile()" class="px-4 py-2 bg-[#2563eb] text-white text-xs font-semibold rounded-xl cursor-pointer">Salvar</button>
-            </div>
+        </div>
+
+        <!-- Grid de Mídias -->
+        <div id="media-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <!-- Cards renderizados via JS -->
+        </div>
+    </main>
+
+    <!-- Modal Detalhes (Estilo Filmow/Letterboxd) -->
+    <div id="modal-details" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-[#101736] border border-blue-500/30 rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto p-5 space-y-4 shadow-2xl relative" id="details-content">
+            <!-- Conteúdo injetado via JS -->
         </div>
     </div>
 
-    <!-- MODAL FORMULÁRIO -->
-    <div id="modal-add-edit" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-3 overflow-y-auto">
-        <div class="glass-card w-full max-w-2xl rounded-2xl border border-blue-500/30 shadow-2xl modal-animate-in max-h-[92vh] flex flex-col overflow-hidden my-auto">
-            <div class="px-5 py-4 border-b border-blue-900/40 flex items-center justify-between bg-[#0e1738]/60">
-                <h3 class="text-base font-bold text-white"><i class="fa-solid fa-pen-to-square text-blue-400 mr-2"></i>Cadastrar Obra</h3>
-                <button type="button" onclick="window.closeAddModal()" class="text-gray-300 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+    <!-- Modal Adicionar / Editar (Simples) -->
+    <div id="modal-add" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-[#101736] border border-blue-500/30 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-5 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center pb-2 border-b border-blue-900/40">
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider">Adicionar Obra</h3>
+                <button onclick="window.closeAddModal()" class="text-xs text-blue-300 hover:text-white cursor-pointer">✕</button>
             </div>
-            <form id="media-form" onsubmit="window.saveMedia(event)" class="p-5 overflow-y-auto space-y-4 flex-1">
-                <!-- Capa -->
-                <div class="space-y-2">
-                    <label class="block text-xs font-semibold text-blue-200">Capa da Obra (URL ou Enviar Ficheiro)</label>
-                    <input type="url" id="form-cover-url" placeholder="https://..." class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200 mb-1">
-                    <label class="flex items-center justify-between border border-dashed border-blue-500/40 bg-[#0e1738]/40 rounded-xl px-3 py-2 cursor-pointer hover:border-blue-400">
-                        <span id="cover-file-label" class="text-xs text-blue-300">Carregar foto do PC/Telemóvel...</span>
-                        <input type="file" id="form-cover-file" accept="image/*" class="hidden" onchange="window.handleCoverFile(event)">
-                    </label>
-                </div>
-
-                <!-- Categoria & Status -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <form id="media-form" onsubmit="window.saveMedia(event)" class="space-y-3 text-xs">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Categoria *</label>
-                        <select id="form-category" required onchange="window.toggleCategoryFields()" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
-                            <option value="anime">Anime</option>
-                            <option value="short">Curta</option>
-                            <option value="dorama">Drama</option>
-                            <option value="movie">Filme</option>
-                            <option value="book">Livro</option>
-                            <option value="series">Série</option>
+                        <label class="block text-blue-300/80 mb-1 font-semibold">Categoria</label>
+                        <select name="category" class="w-full bg-[#090d23] border border-blue-900/50 rounded-xl px-3 py-2 text-white">
+                            <option value="Filme">Filme</option>
+                            <option value="Série">Série</option>
+                            <option value="Livro">Livro</option>
+                            <option value="Mangá">Mangá</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Status</label>
-                        <select id="form-status" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                        <label class="block text-blue-300/80 mb-1 font-semibold">Status</label>
+                        <select name="status" class="w-full bg-[#090d23] border border-blue-900/50 rounded-xl px-3 py-2 text-white">
                             <option value="completed">Concluído</option>
                             <option value="in-progress">Em Andamento</option>
-                            <option value="planned">Quero Ver</option>
+                            <option value="planned">Quero ver</option>
                             <option value="abandoned">Abandonado</option>
                         </select>
                     </div>
                 </div>
-
-                <!-- Título -->
                 <div>
-                    <label class="block text-xs font-semibold text-blue-200 mb-1">Título *</label>
-                    <input type="text" id="form-title" required class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                    <label class="block text-blue-300/80 mb-1 font-semibold">Título</label>
+                    <input type="text" name="title" required class="w-full bg-[#090d23] border border-blue-900/50 rounded-xl px-3 py-2 text-white">
                 </div>
-
-                <!-- Título Original -->
                 <div>
-                    <label class="block text-xs font-semibold text-blue-200 mb-1">Título Original</label>
-                    <input type="text" id="form-original-title" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                    <label class="block text-blue-300/80 mb-1 font-semibold">Título Original / Subtítulo</label>
+                    <input type="text" name="originalTitle" class="w-full bg-[#090d23] border border-blue-900/50 rounded-xl px-3 py-2 text-white">
                 </div>
-
-                <!-- Sinopse -->
-                <div>
-                    <label class="block text-xs font-semibold text-blue-200 mb-1">Sinopse</label>
-                    <textarea id="form-synopsis" rows="2" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl p-3 text-gray-200"></textarea>
-                </div>
-
-                <!-- Gênero com botão ➕ Adicionar ao lado -->
-                <div>
-                    <div class="flex items-center justify-between mb-1">
-                        <label class="block text-xs font-semibold text-blue-200">Gênero</label>
-                        <button type="button" onclick="window.addDynamicInput('genre-container', 'genre-input')" class="text-xs bg-blue-600/30 hover:bg-blue-600/50 text-blue-300 px-2 py-0.5 rounded-lg border border-blue-500/30 cursor-pointer flex items-center space-x-1">
-                            <i class="fa-solid fa-plus text-[10px]"></i><span>Adicionar</span>
-                        </button>
-                    </div>
-                    <div id="genre-container" class="space-y-2">
-                        <div class="flex items-center space-x-2">
-                            <input type="text" class="genre-input w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200" placeholder="Ex: Ação">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Campos Dinâmicos (Autor / Diretor / Criador com botões Adicionar + Temporada/Episódios/OVAs) -->
-                <div id="dynamic-fields-container" class="space-y-3 p-3.5 rounded-xl bg-blue-950/30 border border-blue-900/40">
-                    <div id="field-author" class="hidden space-y-2">
-                        <div class="flex items-center justify-between">
-                            <label class="block text-xs font-semibold text-blue-200">Autor</label>
-                            <button type="button" onclick="window.addDynamicInput('author-container', 'author-input')" class="text-xs bg-blue-600/30 hover:bg-blue-600/50 text-blue-300 px-2 py-0.5 rounded-lg border border-blue-500/30 cursor-pointer flex items-center space-x-1">
-                                <i class="fa-solid fa-plus text-[10px]"></i><span>Adicionar</span>
-                            </button>
-                        </div>
-                        <div id="author-container" class="space-y-2">
-                            <div class="flex items-center space-x-2">
-                                <input type="text" class="author-input w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200" placeholder="Nome do autor">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="field-director" class="hidden space-y-2">
-                        <div class="flex items-center justify-between">
-                            <label class="block text-xs font-semibold text-blue-200">Diretor</label>
-                            <button type="button" onclick="window.addDynamicInput('director-container', 'director-input')" class="text-xs bg-blue-600/30 hover:bg-blue-600/50 text-blue-300 px-2 py-0.5 rounded-lg border border-blue-500/30 cursor-pointer flex items-center space-x-1">
-                                <i class="fa-solid fa-plus text-[10px]"></i><span>Adicionar</span>
-                            </button>
-                        </div>
-                        <div id="director-container" class="space-y-2">
-                            <div class="flex items-center space-x-2">
-                                <input type="text" class="director-input w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200" placeholder="Nome do diretor">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="field-creator" class="hidden space-y-2">
-                        <div class="flex items-center justify-between">
-                            <label class="block text-xs font-semibold text-blue-200">Criador</label>
-                            <button type="button" onclick="window.addDynamicInput('creator-container', 'creator-input')" class="text-xs bg-blue-600/30 hover:bg-blue-600/50 text-blue-300 px-2 py-0.5 rounded-lg border border-blue-500/30 cursor-pointer flex items-center space-x-1">
-                                <i class="fa-solid fa-plus text-[10px]"></i><span>Adicionar</span>
-                            </button>
-                        </div>
-                        <div id="creator-container" class="space-y-2">
-                            <div class="flex items-center space-x-2">
-                                <input type="text" class="creator-input w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200" placeholder="Nome do criador">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="field-seasons-eps" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-                        <div>
-                            <label class="block text-xs font-semibold text-blue-200 mb-1">Temporada</label>
-                            <input type="number" id="form-season" min="1" value="1" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-blue-200 mb-1">Nº de Episódios</label>
-                            <input type="number" id="form-episodes" min="0" value="0" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
-                        </div>
-                        <div id="field-ovas-wrapper" class="hidden">
-                            <label class="block text-xs font-semibold text-blue-200 mb-1">OVAs</label>
-                            <input type="number" id="form-ovas" min="0" value="0" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Data de Lançamento & Data de Visualização -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Data de Lançamento</label>
-                        <input type="date" id="form-release-date" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                        <label class="block text-blue-300/80 mb-1 font-semibold">URL da Capa</label>
+                        <input type="url" name="cover" required class="w-full bg-[#090d23] border border-blue-900/50 rounded-xl px-3 py-2 text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Data de Visualização</label>
-                        <input type="date" id="form-watch-date" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                        <label class="block text-blue-300/80 mb-1 font-semibold">Avaliação (0-10 🌕)</label>
+                        <input type="number" step="0.1" min="0" max="10" name="rating" class="w-full bg-[#090d23] border border-blue-900/50 rounded-xl px-3 py-2 text-white">
                     </div>
                 </div>
-
-                <!-- Nota & Favorito -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-blue-200 mb-1">Nota</label>
-                        <div class="flex items-center space-x-2">
-                            <input type="number" id="form-rating" min="0" max="10" step="0.5" placeholder="8.5" oninput="window.updateFormRatingPreview(this.value)" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
-                            <span id="form-rating-star" class="text-amber-400 font-semibold text-sm hidden flex items-center space-x-1 shrink-0"><i class="fa-solid fa-star"></i><span id="form-rating-val"></span></span>
-                        </div>
+                        <label class="block text-blue-300/80 mb-1 font-semibold">Gêneros (vírgula)</label>
+                        <input type="text" name="genres" placeholder="Ação, Sci-Fi" class="w-full bg-[#090d23] border border-blue-900/50 rounded-xl px-3 py-2 text-white">
                     </div>
-                    <div class="flex items-center space-x-2.5 bg-[#0e1738]/50 px-4 py-2.5 rounded-xl border border-blue-900/30 h-full mt-4 sm:mt-5 cursor-pointer" onclick="document.getElementById('form-favorite').click()">
-                        <input type="checkbox" id="form-favorite" class="w-4 h-4 rounded text-blue-600 bg-[#0e1738] cursor-pointer">
-                        <span class="text-xs font-semibold text-blue-200">Marcar como Favorito ❤️</span>
+                    <div>
+                        <label class="block text-blue-300/80 mb-1 font-semibold">Diretores / Autores (vírgula)</label>
+                        <input type="text" name="directors" placeholder="Christopher Miller" class="w-full bg-[#090d23] border border-blue-900/50 rounded-xl px-3 py-2 text-white">
                     </div>
                 </div>
-
-                <!-- Resenha/Opinião -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-blue-300/80 mb-1 font-semibold">Data Lançamento</label>
+                        <input type="text" name="releaseDate" placeholder="18 Março 2026" class="w-full bg-[#090d23] border border-blue-900/50 rounded-xl px-3 py-2 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-blue-300/80 mb-1 font-semibold">Data Visto</label>
+                        <input type="text" name="watchDate" placeholder="2026" class="w-full bg-[#090d23] border border-blue-900/50 rounded-xl px-3 py-2 text-white">
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <input type="text" name="season" placeholder="Temp." class="bg-[#090d23] border border-blue-900/50 rounded-xl px-3 py-2 text-white">
+                    <input type="text" name="episodes" placeholder="Episódios" class="bg-[#090d23] border border-blue-900/50 rounded-xl px-3 py-2 text-white">
+                    <input type="text" name="ovas" placeholder="OVAs" class="bg-[#090d23] border border-blue-900/50 rounded-xl px-3 py-2 text-white">
+                </div>
                 <div>
-                    <label class="block text-xs font-semibold text-blue-200 mb-1">Resenha / Opinião</label>
-                    <textarea id="form-review" rows="3" placeholder="O que achaste da obra?" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl p-3 text-gray-200"></textarea>
+                    <label class="block text-blue-300/80 mb-1 font-semibold">Sinopse</label>
+                    <textarea name="synopsis" rows="2" class="w-full bg-[#090d23] border border-blue-900/50 rounded-xl px-3 py-2 text-white"></textarea>
                 </div>
-
-                <div class="pt-3 border-t border-blue-900/40 flex justify-end space-x-2">
-                    <button type="button" onclick="window.closeAddModal()" class="px-4 py-2 bg-blue-950/60 text-gray-200 text-xs font-semibold rounded-xl cursor-pointer">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 bg-[#2563eb] text-white text-xs font-semibold rounded-xl cursor-pointer">Salvar Obra</button>
+                <div>
+                    <label class="block text-blue-300/80 mb-1 font-semibold">Minha Opinião / Resenha</label>
+                    <textarea name="review" rows="2" class="w-full bg-[#090d23] border border-blue-900/50 rounded-xl px-3 py-2 text-white"></textarea>
+                </div>
+                <div class="flex items-center space-x-2 pt-1">
+                    <input type="checkbox" name="favorite" id="fav-check" class="rounded bg-[#090d23] border-blue-900/50">
+                    <label for="fav-check" class="font-semibold text-blue-200">Favoritar obra ❤️</label>
+                </div>
+                <div class="pt-3 border-t border-blue-900/40 flex justify-end gap-2">
+                    <button type="button" onclick="window.closeAddModal()" class="px-4 py-2 bg-blue-950/60 text-gray-300 rounded-xl font-semibold cursor-pointer">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-xl font-semibold cursor-pointer">Salvar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- MODAL DETALHES -->
-    <div id="modal-details" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-3 overflow-y-auto">
-        <div class="glass-card w-full max-w-lg rounded-2xl border border-blue-500/30 shadow-2xl modal-animate-in max-h-[90vh] flex flex-col overflow-hidden my-auto">
-            <div class="px-5 py-4 border-b border-blue-900/40 flex items-center justify-between bg-[#0e1738]/60">
-                <h3 class="text-base font-bold text-white">Detalhes da Obra</h3>
-                <button type="button" onclick="window.closeDetailsModal()" class="text-gray-300 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div id="details-content" class="p-5 overflow-y-auto space-y-4 flex-1"></div>
-        </div>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { initializeFirestore, persistentLocalCache, collection, addDoc, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyD_bk-Qu1vjejNGeGlprEs7isWacxpneTo",
-            authDomain: "blue-moon-jscr8785.firebaseapp.com",
-            projectId: "blue-moon-jscr8785",
-            storageBucket: "blue-moon-jscr8785.firebasestorage.app",
-            messagingSenderId: "116253867860",
-            appId: "1:116253867860:web:39cfe119f7cb8a7570d2c1"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = initializeFirestore(app, {
-            localCache: persistentLocalCache()
-        });
-
-        const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
-        const loginBtn = document.getElementById('loginBtn');
-        const loginBtnText = document.getElementById('loginBtnText');
-        const userInfo = document.getElementById('userInfo');
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                if (loginBtnText) loginBtnText.textContent = 'Sair';
-                if(userInfo) {
-                    userInfo.style.display = 'inline';
-                    userInfo.textContent = `Olá, ${user.displayName ? user.displayName.split(' ')[0] : 'Utilizador'}`;
-                }
-            } else {
-                if (loginBtnText) loginBtnText.textContent = 'Entrar com Google';
-                if(userInfo) userInfo.style.display = 'none';
+    <!-- Script de Lógica -->
+    <script>
+        let mediaItems = JSON.parse(localStorage.getItem('bluemoon_media_v2')) || [
+            {
+                id: '1',
+                category: 'Filme',
+                title: 'Devoradores de Estrelas',
+                originalTitle: 'Project Hail Mary',
+                cover: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=60',
+                rating: 4.0,
+                status: 'completed',
+                favorite: true,
+                directors: ['Christopher Miller', 'Phil Lord'],
+                releaseDate: '18 Março 2026',
+                genres: ['Ficção Científica', 'Aventura', 'Drama'],
+                synopsis: 'O professor de ciências Ryland Grace acorda em uma espaçonave anos-luz de casa sem memória de quem ele é ou como chegou lá...',
+                review: 'Livro/adaptação sensacional!'
             }
-        });
+        ];
 
-        if (loginBtn) {
-            loginBtn.addEventListener('click', async () => {
-                if (auth.currentUser) {
-                    await signOut(auth);
-                } else {
-                    try {
-                        await signInWithPopup(auth, provider);
-                    } catch (error) {
-                        console.error("Erro no login:", error);
-                    }
-                }
-            });
+        let currentCategory = 'all';
+        let searchQuery = '';
+
+        function renderTagsFromArray(arr) {
+            return arr.map(item => `<span class="px-2 py-0.5 rounded-md bg-[#090d23] text-blue-200/90 border border-blue-900/40 text-[11px] font-medium">${item}</span>`).join('');
         }
 
-        let mediaItems = [];
-        let currentCategory = 'all';
-        let tempCoverBase64 = '';
+        window.renderStats = () => {
+            const total = mediaItems.length;
+            const completed = mediaItems.filter(i => i.status === 'completed').length;
+            const favorites = mediaItems.filter(i => i.favorite).length;
+            const avgRating = total ? (mediaItems.reduce((acc, i) => acc + (Number(i.rating) || 0), 0) / mediaItems.filter(i => i.rating).length || 0).toFixed(1) : '0.0';
 
-        const savedBanner = localStorage.getItem('blue_moon_banner_bg');
-        if (savedBanner) { document.documentElement.style.setProperty('--banner-bg', `url('${savedBanner}')`); }
-
-        onSnapshot(collection(db, 'media_obras'), (snapshot) => {
-            mediaItems = [];
-            snapshot.forEach((docSnap) => {
-                mediaItems.push({ id: docSnap.id, ...docSnap.data() });
-            });
-            window.updateStats();
-            window.renderMediaGrid();
-        }, (err) => {
-            console.warn("Modo offline ativo:", err);
-        });
-
-        window.updateFormRatingPreview = (val) => {
-            const starWrapper = document.getElementById('form-rating-star');
-            const starVal = document.getElementById('form-rating-val');
-            if (val !== '' && !isNaN(val)) {
-                starVal.innerText = val;
-                starWrapper.classList.remove('hidden');
-            } else {
-                starWrapper.classList.add('hidden');
-            }
-        };
-
-        window.addDynamicInput = (containerId, inputClass, placeholder = '') => {
-            const container = document.getElementById(containerId);
-            const row = document.createElement('div');
-            row.className = 'flex items-center space-x-2';
-            row.innerHTML = `
-                <input type="text" class="${inputClass} w-full bg-[#0e1738] border border-blue-900/65 text-sm rounded-xl px-3 py-2 text-gray-200" placeholder="${placeholder}">
-                <button type="button" onclick="this.parentElement.remove()" class="text-rose-400 hover:text-rose-300 p-2 cursor-pointer text-xs"><i class="fa-solid fa-trash"></i></button>
+            document.getElementById('stats-container').innerHTML = `
+                <div class="bg-[#101736]/70 border border-blue-900/30 rounded-2xl p-3">
+                    <span class="text-[10px] uppercase text-blue-300/60 font-semibold block">Total</span>
+                    <span class="text-lg font-extrabold text-white">${total}</span>
+                </div>
+                <div class="bg-[#101736]/70 border border-blue-900/30 rounded-2xl p-3">
+                    <span class="text-[10px] uppercase text-blue-300/60 font-semibold block">Concluídos</span>
+                    <span class="text-lg font-extrabold text-white">${completed}</span>
+                </div>
+                <div class="bg-[#101736]/70 border border-blue-900/30 rounded-2xl p-3">
+                    <span class="text-[10px] uppercase text-blue-300/60 font-semibold block">Favoritos</span>
+                    <span class="text-lg font-extrabold text-white">${favorites} ❤️</span>
+                </div>
+                <div class="bg-[#101736]/70 border border-blue-900/30 rounded-2xl p-3">
+                    <span class="text-[10px] uppercase text-blue-300/60 font-semibold block">Média Nota</span>
+                    <span class="text-lg font-extrabold text-amber-400">🌕 ${avgRating}</span>
+                </div>
             `;
-            container.appendChild(row);
-        };
-
-        const getMultiValues = (selector) => {
-            return Array.from(document.querySelectorAll(selector))
-                .map(el => el.value.trim())
-                .filter(Boolean);
-        };
-
-        const renderTagsFromArray = (arr) => {
-            if (!arr || !arr.length) return '';
-            return arr.map(i => `<span class="inline-block bg-blue-900/60 border border-blue-700/50 text-blue-200 px-2 py-0.5 rounded-md text-[11px] mr-1 mb-1">${i}</span>`).join('');
-        };
-
-        window.toggleCategoryFields = () => {
-            const cat = document.getElementById('form-category').value;
-            const authorBlock = document.getElementById('field-author');
-            const directorBlock = document.getElementById('field-director');
-            const creatorBlock = document.getElementById('field-creator');
-            const seasonsEpsBlock = document.getElementById('field-seasons-eps');
-            const ovasWrapper = document.getElementById('field-ovas-wrapper');
-
-            authorBlock.classList.add('hidden');
-            directorBlock.classList.add('hidden');
-            creatorBlock.classList.add('hidden');
-            seasonsEpsBlock.classList.add('hidden');
-            ovasWrapper.classList.add('hidden');
-
-            if (cat === 'book') {
-                authorBlock.classList.remove('hidden');
-            } else if (cat === 'short' || cat === 'movie') {
-                directorBlock.classList.remove('hidden');
-            } else if (cat === 'series') {
-                directorBlock.classList.remove('hidden');
-                seasonsEpsBlock.classList.remove('hidden');
-            } else if (cat === 'dorama') {
-                seasonsEpsBlock.classList.remove('hidden');
-            } else if (cat === 'anime') {
-                creatorBlock.classList.remove('hidden');
-                seasonsEpsBlock.classList.remove('hidden');
-                ovasWrapper.classList.remove('hidden');
-            }
-        };
-
-        window.handleCoverFile = (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            document.getElementById('cover-file-label').innerText = file.name;
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                tempCoverBase64 = event.target.result;
-            };
-            reader.readAsDataURL(file);
-        };
-
-        window.openBannerModal = () => document.getElementById('modal-banner').classList.remove('hidden');
-        window.closeBannerModal = () => document.getElementById('modal-banner').classList.add('hidden');
-        window.previewBannerFileName = (e) => {
-            const file = e.target.files[0];
-            if (file) document.getElementById('banner-file-name').innerText = file.name;
-        };
-        window.saveBannerImageFile = () => {
-            const file = document.getElementById('form-banner-file').files[0];
-            if (!file) return window.closeBannerModal();
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                document.documentElement.style.setProperty('--banner-bg', `url('${e.target.result}')`);
-                localStorage.setItem('blue_moon_banner_bg', e.target.result);
-                window.closeBannerModal();
-            };
-            reader.readAsDataURL(file);
-        };
-
-        window.openSidebar = () => { document.getElementById('sidebar-drawer').classList.remove('-translate-x-full'); document.getElementById('sidebar-backdrop').classList.remove('hidden'); };
-        window.closeSidebar = () => { document.getElementById('sidebar-drawer').classList.add('-translate-x-full'); document.getElementById('sidebar-backdrop').classList.add('hidden'); };
-
-        window.openAddModal = () => {
-            tempCoverBase64 = '';
-            document.getElementById('cover-file-label').innerText = 'Carregar foto do PC/Telemóvel...';
-            document.getElementById('modal-add-edit').classList.remove('hidden');
-            window.toggleCategoryFields();
-        };
-        window.closeAddModal = () => {
-            document.getElementById('modal-add-edit').classList.add('hidden');
-            window.updateFormRatingPreview('');
-        };
-
-        window.switchCategory = (cat) => {
-            currentCategory = cat;
-            window.closeSidebar();
-            window.updateStats();
-            window.renderMediaGrid();
-        };
-
-        window.saveMedia = async (e) => {
-            e.preventDefault();
-            const cat = document.getElementById('form-category').value;
-            const coverUrl = document.getElementById('form-cover-url').value.trim();
-            const finalCover = tempCoverBase64 || coverUrl || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=600';
-
-            const newItem = {
-                cover: finalCover,
-                category: cat,
-                status: document.getElementById('form-status').value,
-                title: document.getElementById('form-title').value,
-                originalTitle: document.getElementById('form-original-title').value,
-                genres: getMultiValues('.genre-input'),
-                releaseDate: document.getElementById('form-release-date').value,
-                authors: cat === 'book' ? getMultiValues('.author-input') : [],
-                directors: (cat === 'short' || cat === 'movie' || cat === 'series') ? getMultiValues('.director-input') : [],
-                creators: cat === 'anime' ? getMultiValues('.creator-input') : [],
-                season: ['anime', 'series', 'dorama'].includes(cat) ? document.getElementById('form-season').value : '',
-                episodes: ['anime', 'series', 'dorama'].includes(cat) ? document.getElementById('form-episodes').value : '',
-                ovas: cat === 'anime' ? document.getElementById('form-ovas').value : '',
-                synopsis: document.getElementById('form-synopsis').value,
-                watchDate: document.getElementById('form-watch-date').value,
-                rating: document.getElementById('form-rating').value,
-                favorite: document.getElementById('form-favorite').checked,
-                review: document.getElementById('form-review').value,
-                createdAt: Date.now()
-            };
-            try {
-                await addDoc(collection(db, 'media_obras'), newItem);
-                document.getElementById('media-form').reset();
-                window.updateFormRatingPreview('');
-                document.getElementById('genre-container').innerHTML = '<div class="flex items-center space-x-2"><input type="text" class="genre-input w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200" placeholder="Ex: Ação"></div>';
-                document.getElementById('author-container').innerHTML = '<div class="flex items-center space-x-2"><input type="text" class="author-input w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200" placeholder="Nome do autor"></div>';
-                document.getElementById('director-container').innerHTML = '<div class="flex items-center space-x-2"><input type="text" class="director-input w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200" placeholder="Nome do diretor"></div>';
-                document.getElementById('creator-container').innerHTML = '<div class="flex items-center space-x-2"><input type="text" class="creator-input w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200" placeholder="Nome do criador"></div>';
-                tempCoverBase64 = '';
-                window.closeAddModal();
-            } catch (err) {
-                console.error("Erro ao salvar:", err);
-            }
-        };
-
-        window.updateStats = () => {
-            let list = mediaItems;
-            if (currentCategory === 'favorites') list = mediaItems.filter(i => i.favorite);
-            else if (currentCategory !== 'all') list = mediaItems.filter(i => i.category === currentCategory);
-
-            const setVal = (id, val) => { const el = document.getElementById(id); if(el) el.innerText = val; };
-            setVal('stat-acervo', list.length);
-            setVal('stat-completed', list.filter(i => i.status === 'completed').length);
-            setVal('stat-in-progress', list.filter(i => i.status === 'in-progress').length);
-            setVal('stat-planned', list.filter(i => i.status === 'planned').length);
-            setVal('stat-abandoned', list.filter(i => i.status === 'abandoned').length);
-            setVal('stat-favorites', list.filter(i => i.favorite).length);
-
-            ['all','favorites','anime','short','dorama','movie','book','series'].forEach(c => {
-                const count = c === 'all' ? mediaItems.length : (c === 'favorites' ? mediaItems.filter(i => i.favorite).length : mediaItems.filter(i => i.category === c).length);
-                const badge = document.getElementById(`badge-${c}`);
-                if (badge) badge.innerText = count;
-            });
         };
 
         window.renderMediaGrid = () => {
+            const filtered = mediaItems.filter(item => {
+                const matchCat = currentCategory === 'all' || item.category === currentCategory;
+                const matchSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchCat && matchSearch;
+            });
+
             const grid = document.getElementById('media-grid');
-            const searchInput = document.getElementById('search-input');
-            const emptyState = document.getElementById('empty-state');
-            if (!grid) return;
-            grid.innerHTML = '';
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-xs text-blue-300/60">Nenhuma obra encontrada.</div>`;
+                return;
+            }
 
-            const search = searchInput ? searchInput.value.toLowerCase() : '';
-            let list = mediaItems.filter(i => {
-                if (currentCategory === 'favorites') return i.favorite;
-                if (currentCategory !== 'all') return i.category === currentCategory;
-                return true;
-            }).filter(i => i.title?.toLowerCase().includes(search));
-
-            if (emptyState) emptyState.classList.toggle('hidden', list.length > 0);
-
-            list.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'glass-card rounded-xl overflow-hidden shadow-lg border border-blue-500/20 flex flex-col cursor-pointer hover:border-blue-400/60 transition';
-                card.onclick = () => window.openDetailsModal(item.id);
-                card.innerHTML = `
-                    <div class="relative aspect-[2/3] bg-blue-950/40">
-                        <img class="w-full h-full object-cover" src="${item.cover}" alt="${item.title}">
-                        ${item.favorite ? '<span class="absolute top-2 right-2 text-rose-400 text-sm drop-shadow-md">❤️</span>' : ''}
+            grid.innerHTML = filtered.map(item => `
+                <div onclick="window.openDetailsModal('${item.id}')" class="group bg-[#101736] border border-blue-900/40 rounded-2xl overflow-hidden cursor-pointer hover:border-blue-500/50 transition flex flex-col shadow-lg">
+                    <div class="aspect-[2/3] w-full overflow-hidden bg-[#090d23] relative">
+                        <img src="${item.cover}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        ${item.favorite ? `<span class="absolute top-2 right-2 bg-black/60 backdrop-blur-md p-1 rounded-full text-xs">❤️</span>` : ''}
+                        ${item.rating ? `<span class="absolute bottom-2 left-2 bg-black/70 backdrop-blur-md px-2 py-0.5 rounded-lg text-[10px] font-bold text-amber-400">🌕 ${item.rating}</span>` : ''}
                     </div>
                     <div class="p-3 flex-1 flex flex-col justify-between">
-                        <h4 class="font-bold text-sm text-white truncate">${item.title}</h4>
-                        ${item.rating ? `<span class="text-[11px] text-amber-400 font-semibold mt-1 flex items-center space-x-1"><i class="fa-solid fa-star text-[10px]"></i><span>${item.rating} / 10</span></span>` : ''}
+                        <div>
+                            <span class="text-[9px] uppercase tracking-wider text-blue-300/60 font-semibold">${item.category}</span>
+                            <h3 class="text-xs font-bold text-white leading-snug line-clamp-1 mt-0.5">${item.title}</h3>
+                        </div>
                     </div>
-                `;
-                grid.appendChild(card);
+                </div>
+            `).join('');
+        };
+
+        window.setCategory = (cat) => {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-tab').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.className = 'cat-tab px-3 py-1.5 rounded-xl text-xs font-semibold bg-blue-600 text-white cursor-pointer transition shrink-0';
+                } else {
+                    btn.className = 'cat-tab px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#090d23] text-blue-200/70 hover:text-white cursor-pointer transition shrink-0';
+                }
             });
+            window.renderMediaGrid();
+        };
+
+        window.handleSearchFilter = () => {
+            searchQuery = document.getElementById('search-input').value;
+            window.renderMediaGrid();
         };
 
         window.openDetailsModal = (id) => {
             const item = mediaItems.find(i => i.id === id);
             if (!item) return;
 
-            const genresList = item.genres || (item.genre ? [item.genre] : []);
-            const authorsList = item.authors || (item.author ? [item.author] : []);
-            const directorsList = item.directors || (item.director ? [item.director] : []);
-            const creatorsList = item.creators || (item.creator ? [item.creator] : []);
+            const genresList = item.genres || [];
+            const directorsList = item.directors || [];
 
-            let extraInfo = '';
-            if (item.originalTitle) extraInfo += `<p><strong>Título Original:</strong> ${item.originalTitle}</p>`;
-            if (item.status) extraInfo += `<p><strong>Status:</strong> ${item.status}</p>`;
-            if (genresList.length) extraInfo += `<div class="mt-1"><strong>Gênero(s):</strong><div class="mt-0.5">${renderTagsFromArray(genresList)}</div></div>`;
-            if (authorsList.length) extraInfo += `<div class="mt-1"><strong>Autor(es):</strong><div class="mt-0.5">${renderTagsFromArray(authorsList)}</div></div>`;
-            if (directorsList.length) extraInfo += `<div class="mt-1"><strong>Diretor(es):</strong><div class="mt-0.5">${renderTagsFromArray(directorsList)}</div></div>`;
-            if (creatorsList.length) extraInfo += `<div class="mt-1"><strong>Criador(es):</strong><div class="mt-0.5">${renderTagsFromArray(creatorsList)}</div></div>`;
-            if (item.season) extraInfo += `<p><strong>Temporada:</strong> ${item.season}</p>`;
-            if (item.episodes) extraInfo += `<p><strong>Episódios:</strong> ${item.episodes}</p>`;
-            if (item.ovas) extraInfo += `<p><strong>OVAs:</strong> ${item.ovas}</p>`;
-            if (item.releaseDate) extraInfo += `<p><strong>Data de Lançamento:</strong> ${item.releaseDate}</p>`;
-            if (item.watchDate) extraInfo += `<p><strong>Visto em:</strong> ${item.watchDate}</p>`;
+            const statusMap = {
+                'completed': 'Concluído',
+                'in-progress': 'Em Andamento',
+                'planned': 'Quero ver',
+                'abandoned': 'Abandonado'
+            };
 
             document.getElementById('details-content').innerHTML = `
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <img src="${item.cover}" class="w-28 h-40 object-cover rounded-xl border border-blue-500/30 mx-auto sm:mx-0">
-                    <div class="space-y-1.5 flex-1 text-xs">
-                        <h4 class="text-base font-extrabold text-white">${item.title} ${item.favorite ? '❤️' : ''}</h4>
-                        <p class="text-blue-300 uppercase font-semibold flex items-center space-x-1.5">
-                            <span>Categoria: ${item.category}</span>
-                            ${item.rating ? `<span class="text-amber-400 font-bold flex items-center space-x-1 ml-2"><span>|</span><i class="fa-solid fa-star text-[10px]"></i><span>${item.rating} / 10</span></span>` : ''}
-                        </p>
-                        <div class="text-blue-200/85 space-y-1 pt-1">${extraInfo}</div>
+                <div class="flex flex-wrap items-center gap-1.5 pb-3 border-b border-blue-900/40 text-xs">
+                    <span class="px-2.5 py-1 rounded-lg bg-blue-600/30 text-blue-200 border border-blue-500/30 font-medium">
+                        ✓ ${statusMap[item.status] || 'Status'}
+                    </span>
+                    <button onclick="window.toggleFavoriteModal('${item.id}')" class="px-2.5 py-1 rounded-lg bg-[#0e1738] hover:bg-blue-950/60 text-gray-200 border border-blue-900/50 flex items-center space-x-1 cursor-pointer">
+                        <span>${item.favorite ? '❤️ Favorito' : '🤍 Favoritar'}</span>
+                    </button>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-5 pt-2">
+                    <div class="w-36 shrink-0 mx-auto sm:mx-0">
+                        <div class="aspect-[2/3] rounded-xl overflow-hidden border border-blue-500/30 shadow-lg">
+                            <img src="${item.cover}" class="w-full h-full object-cover" alt="${item.title}">
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 space-y-3">
+                        <div>
+                            <h4 class="text-xl font-extrabold text-white leading-tight">${item.title}</h4>
+                            ${item.originalTitle ? `<p class="text-xs text-blue-300/70 italic mt-0.5">${item.originalTitle}</p>` : ''}
+                        </div>
+
+                        ${item.rating ? `
+                            <div class="bg-[#0e1738]/80 border border-blue-500/30 rounded-xl p-3 flex items-center justify-between">
+                                <div>
+                                    <span class="block text-[10px] font-bold text-blue-300 uppercase tracking-wider">Minha Avaliação</span>
+                                    <div class="flex items-center space-x-1.5 text-amber-400 font-bold text-sm mt-0.5">
+                                        <span>🌕</span><span>${item.rating} / 10</span>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-blue-200/60 uppercase font-semibold">${item.category}</span>
+                            </div>
+                        ` : ''}
+
+                        <div class="space-y-2 text-xs pt-1">
+                            ${directorsList.length ? `<div><span class="text-blue-300/70 block text-[11px] font-semibold uppercase">Dirigido / Criado por</span><div class="mt-1 flex flex-wrap gap-1">${renderTagsFromArray(directorsList)}</div></div>` : ''}
+                            ${item.releaseDate ? `<div><span class="text-blue-300/70 block text-[10px] uppercase font-semibold">Lançamento</span><span class="text-gray-200 font-medium">${item.releaseDate}</span></div>` : ''}
+                        </div>
                     </div>
                 </div>
-                ${item.synopsis ? `<div class="space-y-1"><strong class="text-xs text-blue-200">Sinopse:</strong><p class="text-xs text-blue-200/90 leading-relaxed bg-[#0e1738]/50 p-2.5 rounded-xl border border-blue-900/30">${item.synopsis}</p></div>` : ''}
-                ${item.review ? `<div class="space-y-1"><strong class="text-xs text-blue-200">Resenha / Opinião:</strong><p class="text-xs text-amber-200/90 leading-relaxed bg-[#0e1738]/50 p-2.5 rounded-xl border border-blue-900/30 italic">"${item.review}"</p></div>` : ''}
-                <div class="pt-3 border-t border-blue-900/40 flex justify-between">
-                    <button onclick="window.deleteMedia('${item.id}')" class="px-4 py-2 bg-rose-600/20 text-rose-300 text-xs font-semibold rounded-xl cursor-pointer">Excluir</button>
-                    <button onclick="window.closeDetailsModal()" class="px-4 py-2 bg-blue-950/60 text-gray-200 text-xs font-semibold rounded-xl cursor-pointer">Fechar</button>
+
+                ${genresList.length ? `<div class="space-y-1 pt-2"><span class="text-xs font-semibold text-blue-300/70 uppercase">Gênero</span><div class="flex flex-wrap gap-1.5 pt-1">${renderTagsFromArray(genresList)}</div></div>` : ''}
+                ${item.synopsis ? `<div class="space-y-1.5 pt-2 border-t border-blue-900/30"><strong class="text-xs font-semibold text-blue-200 uppercase tracking-wider">Sinopse</strong><p class="text-xs text-blue-200/90 leading-relaxed">${item.synopsis}</p></div>` : ''}
+                ${item.review ? `<div class="space-y-1.5 pt-2"><strong class="text-xs font-semibold text-blue-200 uppercase tracking-wider">Minha Opinião</strong><p class="text-xs text-amber-200/90 leading-relaxed bg-[#0e1738]/50 p-3 rounded-xl border border-blue-900/30 italic">"${item.review}"</p></div>` : ''}
+
+                <div class="pt-4 border-t border-blue-900/40 flex justify-between items-center">
+                    <button onclick="window.deleteMedia('${item.id}')" class="px-3.5 py-2 bg-rose-600/25 hover:bg-rose-600/35 text-rose-300 text-xs font-semibold rounded-xl cursor-pointer transition">Excluir obra</button>
+                    <button onclick="window.closeDetailsModal()" class="px-4 py-2 bg-blue-950/60 hover:bg-blue-900/60 text-gray-200 text-xs font-semibold rounded-xl cursor-pointer transition">Fechar</button>
                 </div>
             `;
             document.getElementById('modal-details').classList.remove('hidden');
         };
-        window.closeDetailsModal = () => document.getElementById('modal-details').classList.add('hidden');
 
-        window.deleteMedia = async (id) => {
-            if (confirm('Deseja excluir esta obra?')) {
-                await deleteDoc(doc(db, 'media_obras', id));
-                window.closeDetailsModal();
-            }
+        window.closeDetailsModal = () => document.getElementById('modal-details').classList.add('hidden');
+        window.openAddModal = () => document.getElementById('modal-add').classList.remove('hidden');
+        window.closeAddModal = () => document.getElementById('modal-add').classList.add('hidden');
+
+        window.toggleFavoriteModal = (id) => {
+            const index = mediaItems.findIndex(i => i.id === id);
+            if (index === -1) return;
+            mediaItems[index].favorite = !mediaItems[index].favorite;
+            localStorage.setItem('bluemoon_media_v2', JSON.stringify(mediaItems));
+            window.renderStats();
+            window.renderMediaGrid();
+            window.openDetailsModal(id);
         };
 
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/Blue-Moon/sw.js');
-        }
+        window.saveMedia = (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const newItem = {
+                id: Date.now().toString(),
+                category: form.category.value,
+                status: form.status.value,
+                title: form.title.value,
+                originalTitle: form.originalTitle.value,
+                cover: form.cover.value,
+                rating: form.rating.value ? parseFloat(form.rating.value) : null,
+                genres: form.genres.value ? form.genres.value.split(',').map(s => s.trim()) : [],
+                directors: form.directors.value ? form.directors.value.split(',').map(s => s.trim()) : [],
+                releaseDate: form.releaseDate.value,
+                watchDate: form.watchDate.value,
+                season: form.season.value,
+                episodes: form.episodes.value,
+                ovas: form.ovas.value,
+                synopsis: form.synopsis.value,
+                review: form.review.value,
+                favorite: form.favorite.checked
+            };
+            mediaItems.unshift(newItem);
+            localStorage.setItem('bluemoon_media_v2', JSON.stringify(mediaItems));
+            window.closeAddModal();
+            window.renderStats();
+            window.renderMediaGrid();
+            form.reset();
+        };
+
+        window.deleteMedia = (id) => {
+            if (!confirm('Deseja realmente excluir esta obra?')) return;
+            mediaItems = mediaItems.filter(i => i.id !== id);
+            localStorage.setItem('bluemoon_media_v2', JSON.stringify(mediaItems));
+            window.closeDetailsModal();
+            window.renderStats();
+            window.renderMediaGrid();
+        };
+
+        // Inicialização
+        window.renderStats();
+        window.renderMediaGrid();
     </script>
 </body>
 </html>
