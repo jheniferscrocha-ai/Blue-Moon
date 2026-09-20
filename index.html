@@ -443,6 +443,29 @@
         let currentCategory = 'all';
         let tempCoverBase64 = '';
 
+        // Funções de tradução para PT-BR
+        const traduzirCategoria = (cat) => {
+            const map = {
+                'anime': 'Anime',
+                'short': 'Curta',
+                'dorama': 'Drama',
+                'movie': 'Filme',
+                'book': 'Livro',
+                'series': 'Série'
+            };
+            return map[cat?.toLowerCase()] || (cat ? cat.toUpperCase() : 'N/A');
+        };
+
+        const traduzirStatus = (st) => {
+            const map = {
+                'completed': 'Concluído',
+                'in-progress': 'Em Andamento',
+                'planned': 'Quero Ver',
+                'abandoned': 'Abandonado'
+            };
+            return map[st?.toLowerCase()] || st || 'N/A';
+        };
+
         // Estado temporário de pílulas/tags
         const formTags = {
             genre: [],
@@ -755,7 +778,7 @@
 
             let extraInfo = '';
             if (item.originalTitle) extraInfo += `<p><strong>Título Original:</strong> ${item.originalTitle}</p>`;
-            if (item.status) extraInfo += `<p><strong>Status:</strong> ${item.status}</p>`;
+            if (item.status) extraInfo += `<p><strong>Status:</strong> ${traduzirStatus(item.status)}</p>`;
             if (genresList.length) extraInfo += `<div class="mt-1"><strong>Gênero(s):</strong><div class="mt-0.5">${renderTagsFromArray(genresList)}</div></div>`;
             if (authorsList.length) extraInfo += `<div class="mt-1"><strong>Autor(es):</strong><div class="mt-0.5">${renderTagsFromArray(authorsList)}</div></div>`;
             if (directorsList.length) extraInfo += `<div class="mt-1"><strong>Diretor(es):</strong><div class="mt-0.5">${renderTagsFromArray(directorsList)}</div></div>`;
@@ -773,7 +796,7 @@
                     <div class="space-y-1.5 flex-1 text-xs">
                         <h4 class="text-base font-extrabold text-white">${item.title} ${item.favorite ? '❤️' : ''}</h4>
                         <p class="text-blue-300 uppercase font-semibold flex items-center space-x-1.5">
-                            <span>Categoria: ${item.category}</span>
+                            <span>Categoria: ${traduzirCategoria(item.category)}</span>
                             ${item.rating ? `<span class="text-blue-300 font-bold flex items-center space-x-1 ml-2"><span>|</span><span>🌕</span><span>${item.rating} / 10</span></span>` : ''}
                         </p>
                         <div class="text-blue-200/85 space-y-1 pt-1">${extraInfo}</div>
