@@ -774,6 +774,9 @@
                 return true;
             }).filter(i => i.title?.toLowerCase().includes(search));
 
+            // Ordena por ordem de cadastro (mais recentes primeiro)
+            list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
             if (emptyState) emptyState.classList.toggle('hidden', list.length > 0);
 
             list.forEach(item => {
