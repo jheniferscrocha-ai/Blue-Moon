@@ -466,14 +466,19 @@
             return map[st?.toLowerCase()] || st || 'N/A';
         };
 
-        // Função de formatação de data AAAA-MM-DD para DD/MM/AAAA corrigida
+        // Função de formatação de data por extenso (ex: 18 de março de 2026)
         const formatarDataBR = (dataStr) => {
             if (!dataStr) return '';
             const partes = dataStr.split('-');
-            if (partes.length === 3) {
-                return `${partes}/${partes}/${partes[0]}`;
-            }
-            return dataStr;
+            if (partes.length !== 3) return dataStr;
+            
+            const [ano, mes, dia] = partes;
+            const meses = [
+                'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+                'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+            ];
+            const nomeMes = meses[parseInt(mes, 10) - 1] || '';
+            return `${parseInt(dia, 10)} de ${nomeMes} de ${ano}`;
         };
 
         // Estado temporário de pílulas/tags
