@@ -466,6 +466,16 @@
             return map[st?.toLowerCase()] || st || 'N/A';
         };
 
+        // Função de formatação de data AAAA-MM-DD para DD/MM/AAAA
+        const formatarDataBR = (dataStr) => {
+            if (!dataStr) return '';
+            const partes = dataStr.split('-');
+            if (partes.length === 3) {
+                return `${partes}/${partes}/${partes[0]}`;
+            }
+            return dataStr;
+        };
+
         // Estado temporário de pílulas/tags
         const formTags = {
             genre: [],
@@ -787,8 +797,8 @@
             if (item.episodes) extraInfo += `<p><strong>Episódios:</strong> ${item.episodes}</p>`;
             if (item.ovas) extraInfo += `<p><strong>OVAs:</strong> ${item.ovas}</p>`;
             if (item.duration) extraInfo += `<p><strong>Duração:</strong> ${item.duration} min</p>`;
-            if (item.releaseDate) extraInfo += `<p><strong>Data de Lançamento:</strong> ${item.releaseDate}</p>`;
-            if (item.watchDate) extraInfo += `<p><strong>Visto em:</strong> ${item.watchDate}</p>`;
+            if (item.releaseDate) extraInfo += `<p><strong>Data de Lançamento:</strong> ${formatarDataBR(item.releaseDate)}</p>`;
+            if (item.watchDate) extraInfo += `<p><strong>Visto em:</strong> ${formatarDataBR(item.watchDate)}</p>`;
 
             document.getElementById('details-content').innerHTML = `
                 <div class="flex flex-col sm:flex-row gap-4">
