@@ -254,6 +254,27 @@
                     <input type="text" id="form-original-title" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
                 </div>
 
+                <!-- Bloco Específico para Livros: Volume Único / Série ou Saga -->
+                <div id="field-book-type-wrapper" class="hidden space-y-3 p-3.5 rounded-xl bg-blue-950/30 border border-blue-900/40">
+                    <div>
+                        <label class="block text-xs font-semibold text-blue-200 mb-1">Tipo de Publicação</label>
+                        <select id="form-book-type" onchange="window.toggleBookTypeFields()" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                            <option value="standalone">Volume Único</option>
+                            <option value="series">Série / Saga</option>
+                        </select>
+                    </div>
+                    <div id="field-book-series-details" class="hidden grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-blue-200 mb-1">Nome da Série / Saga</label>
+                            <input type="text" id="form-saga-name" placeholder="Ex: Trilogia Aço" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-blue-200 mb-1">Número do Livro</label>
+                            <input type="text" id="form-saga-number" placeholder="Ex: 1 ou 1.5" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Sinopse -->
                 <div>
                     <label class="block text-xs font-semibold text-blue-200 mb-1">Sinopse</label>
@@ -550,6 +571,16 @@
             return arr.map(i => `<span class="inline-block bg-blue-900/60 border border-blue-700/50 text-blue-200 px-2 py-0.5 rounded-md text-[11px] mr-1 mb-1">${i}</span>`).join('');
         };
 
+        window.toggleBookTypeFields = () => {
+            const bookType = document.getElementById('form-book-type').value;
+            const detailsBlock = document.getElementById('field-book-series-details');
+            if (bookType === 'series') {
+                detailsBlock.classList.remove('hidden');
+            } else {
+                detailsBlock.classList.add('hidden');
+            }
+        };
+
         window.toggleCategoryFields = () => {
             const cat = document.getElementById('form-category').value;
             const authorBlock = document.getElementById('field-author');
@@ -560,18 +591,22 @@
             const durationLabel = document.getElementById('form-duration-label');
             const durationUnit = document.getElementById('form-duration-unit');
             const durationInput = document.getElementById('form-duration');
+            const bookTypeWrapper = document.getElementById('field-book-type-wrapper');
 
             authorBlock.classList.add('hidden');
             directorBlock.classList.add('hidden');
             creatorBlock.classList.add('hidden');
             seasonsEpsBlock.classList.add('hidden');
             ovasWrapper.classList.add('hidden');
+            bookTypeWrapper.classList.add('hidden');
 
             if (cat === 'book') {
                 authorBlock.classList.remove('hidden');
+                bookTypeWrapper.classList.remove('hidden');
                 durationLabel.innerText = 'Páginas';
                 durationUnit.innerText = 'pág';
                 durationInput.placeholder = 'Ex: 350';
+                window.toggleBookTypeFields();
             } else {
                 durationLabel.innerText = 'Duração';
                 durationUnit.innerText = 'min';
@@ -684,6 +719,11 @@
             document.getElementById('form-category').value = item.category || 'anime';
             window.toggleCategoryFields();
 
+            document.getElementById('form-book-type').value = item.bookType || 'standalone';
+            window.toggleBookTypeFields();
+            document.getElementById('form-saga-name').value = item.sagaName || '';
+            document.getElementById('form-saga-number').value = item.sagaNumber || '';
+
             document.getElementById('form-status').value = item.status || 'completed';
             document.getElementById('form-title').value = item.title || '';
             document.getElementById('form-original-title').value = item.originalTitle || '';
@@ -734,6 +774,9 @@
                 status: document.getElementById('form-status').value,
                 title: document.getElementById('form-title').value,
                 originalTitle: document.getElementById('form-original-title').value,
+                bookType: cat === 'book' ? document.getElementById('form-book-type').value : '',
+                sagaName: (cat === 'book' && document.getElementById('form-book-type').value === 'series') ? document.getElementById('form-saga-name').value : '',
+                sagaNumber: (cat === 'book' && document.getElementById('form-book-type').value === 'series') ? document.getElementById('form-saga-number').value : '',
                 genres: [...formTags.genre],
                 releaseDate: document.getElementById('form-release-date').value,
                 authors: cat === 'book' ? [...formTags.author] : [],
@@ -838,6 +881,15 @@
 
             let extraInfo = '';
             if (item.originalTitle) extraInfo += `<p><strong>Título Original:</strong> ${item.originalTitle}</p>`;
+            if (item.category === 'book') {
+                if (item.bookType === 'series') {
+                    extraInfo += `<p><strong>Tipo:</strong> Série / Saga</p>`;
+                    if (item.sagaName) extraInfo += `<p><strong>Saga:</strong> ${item.sagaName}</p>`;
+                    if (item.sagaNumber) extraInfo += `<p><strong>Volume:</strong> ${item.sagaNumber}</p>`;
+                } else {
+                    extraInfo += `<p><strong>Tipo:</strong> Volume Único</p>`;
+                }
+            }
             if (item.status) extraInfo += `<p><strong>Status:</strong> ${traduzirStatus(item.status)}</p>`;
             if (genresList.length) extraInfo += `<div class="mt-1"><strong>Gênero(s):</strong><div class="mt-0.5">${renderTagsFromArray(genresList)}</div></div>`;
             if (authorsList.length) extraInfo += `<div class="mt-1"><strong>Autor(es):</strong><div class="mt-0.5">${renderTagsFromArray(authorsList)}</div></div>`;
