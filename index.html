@@ -591,7 +591,6 @@
             const bookTypeWrapper = document.getElementById('field-book-type-wrapper');
             const optionPlanned = document.getElementById('option-planned');
 
-            // Atualiza o texto do select de status dentro do modal com base na categoria escolhida no formulário
             if (optionPlanned) {
                 optionPlanned.innerText = (cat === 'book' ? 'Quero Ler' : 'Quero Ver');
             }
@@ -828,15 +827,15 @@
             setVal('stat-abandoned', list.filter(i => i.status === 'abandoned').length);
             setVal('stat-favorites', list.filter(i => i.favorite).length);
 
-            // Dinâmica do label do card de estatísticas "Quero Ver / Quero Ler / Quero Ver/Ler"
+            // Regra exata solicitada: "Quero Ler" apenas na aba livros, "Quero Ver" nas outras categorias, e "Quero Ver/Ler" no Início e Favoritos
             const plannedLabelEl = document.getElementById('stat-planned-label');
             if (plannedLabelEl) {
                 if (currentCategory === 'book') {
-                    plannedLabelEl.innerText = 'Quero Ler';
+                    plannedLabelEl.innerText = 'QUERO LER';
                 } else if (currentCategory === 'all' || currentCategory === 'favorites') {
-                    plannedLabelEl.innerText = 'Quero Ver/Ler';
+                    plannedLabelEl.innerText = 'QUERO VER/LER';
                 } else {
-                    plannedLabelEl.innerText = 'Quero Ver';
+                    plannedLabelEl.innerText = 'QUERO VER';
                 }
             }
 
