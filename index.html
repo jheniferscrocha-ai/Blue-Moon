@@ -149,7 +149,7 @@
                         <div class="w-9 h-9 bg-amber-500/20 border border-amber-500/30 rounded-xl flex items-center justify-center text-amber-400"><i class="fa-solid fa-spinner text-sm"></i></div>
                     </div>
                     <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
-                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase">Quero Ver</p><h3 class="text-2xl font-bold text-sky-400 mt-0.5" id="stat-planned">0</h3></div>
+                        <div><p class="text-[11px] font-semibold text-blue-300/80 uppercase" id="stat-planned-label">Quero Ver/Ler</p><h3 class="text-2xl font-bold text-sky-400 mt-0.5" id="stat-planned">0</h3></div>
                         <div class="w-9 h-9 bg-sky-500/20 border border-sky-500/30 rounded-xl flex items-center justify-center text-sky-400"><i class="fa-solid fa-bookmark text-sm"></i></div>
                     </div>
                     <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between">
@@ -236,7 +236,7 @@
                         <select id="form-status" class="w-full bg-[#0e1738] border border-blue-900/60 text-sm rounded-xl px-3 py-2 text-gray-200">
                             <option value="completed">Concluído</option>
                             <option value="in-progress">Em Andamento</option>
-                            <option value="planned">Quero Ver</option>
+                            <option value="planned" id="option-planned">Quero Ver/Ler</option>
                             <option value="abandoned">Abandonado</option>
                         </select>
                     </div>
@@ -464,7 +464,6 @@
         let currentCategory = 'all';
         let tempCoverBase64 = '';
 
-        // Funções de tradução para PT-BR
         const traduzirCategoria = (cat) => {
             const map = {
                 'anime': 'Anime',
@@ -477,17 +476,16 @@
             return map[cat?.toLowerCase()] || (cat ? cat.toUpperCase() : 'N/A');
         };
 
-        const traduzirStatus = (st) => {
+        const traduzirStatus = (st, cat) => {
             const map = {
                 'completed': 'Concluído',
                 'in-progress': 'Em Andamento',
-                'planned': 'Quero Ver',
+                'planned': (cat === 'book' ? 'Quero Ler' : 'Quero Ver'),
                 'abandoned': 'Abandonado'
             };
             return map[st?.toLowerCase()] || st || 'N/A';
         };
 
-        // Função de formatação de data por extenso (ex: 18 de março de 2026)
         const formatarDataBR = (dataStr) => {
             if (!dataStr) return '';
             const partes = dataStr.split('-');
@@ -502,7 +500,6 @@
             return `${parseInt(dia, 10)} de ${nomeMes} de ${ano}`;
         };
 
-        // Estado temporário de pílulas/tags
         const formTags = {
             genre: [],
             author: [],
@@ -592,6 +589,12 @@
             const durationUnit = document.getElementById('form-duration-unit');
             const durationInput = document.getElementById('form-duration');
             const bookTypeWrapper = document.getElementById('field-book-type-wrapper');
+            const optionPlanned = document.getElementById('option-planned');
+
+            // Atualiza o texto do select de status dentro do modal com base na categoria escolhida no formulário
+            if (optionPlanned) {
+                optionPlanned.innerText = (cat === 'book' ? 'Quero Ler' : 'Quero Ver');
+            }
 
             authorBlock.classList.add('hidden');
             directorBlock.classList.add('hidden');
@@ -627,7 +630,6 @@
             }
         };
 
-        // Função com compressão/redimensionamento via canvas para prints pesados
         window.handleCoverFile = (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -826,6 +828,18 @@
             setVal('stat-abandoned', list.filter(i => i.status === 'abandoned').length);
             setVal('stat-favorites', list.filter(i => i.favorite).length);
 
+            // Dinâmica do label do card de estatísticas "Quero Ver / Quero Ler / Quero Ver/Ler"
+            const plannedLabelEl = document.getElementById('stat-planned-label');
+            if (plannedLabelEl) {
+                if (currentCategory === 'book') {
+                    plannedLabelEl.innerText = 'Quero Ler';
+                } else if (currentCategory === 'all' || currentCategory === 'favorites') {
+                    plannedLabelEl.innerText = 'Quero Ver/Ler';
+                } else {
+                    plannedLabelEl.innerText = 'Quero Ver';
+                }
+            }
+
             ['all','favorites','anime','short','dorama','movie','book','series'].forEach(c => {
                 const count = c === 'all' ? mediaItems.length : (c === 'favorites' ? mediaItems.filter(i => i.favorite).length : mediaItems.filter(i => i.category === c).length);
                 const badge = document.getElementById(`badge-${c}`);
@@ -847,7 +861,6 @@
                 return true;
             }).filter(i => i.title?.toLowerCase().includes(search));
 
-            // Ordena por ordem de cadastro (mais recentes primeiro)
             list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
             if (emptyState) emptyState.classList.toggle('hidden', list.length > 0);
@@ -890,7 +903,7 @@
                     extraInfo += `<p><strong>Tipo:</strong> Volume Único</p>`;
                 }
             }
-            if (item.status) extraInfo += `<p><strong>Status:</strong> ${traduzirStatus(item.status)}</p>`;
+            if (item.status) extraInfo += `<p><strong>Status:</strong> ${traduzirStatus(item.status, item.category)}</p>`;
             if (genresList.length) extraInfo += `<div class="mt-1"><strong>Gênero(s):</strong><div class="mt-0.5">${renderTagsFromArray(genresList)}</div></div>`;
             if (authorsList.length) extraInfo += `<div class="mt-1"><strong>Autor(es):</strong><div class="mt-0.5">${renderTagsFromArray(authorsList)}</div></div>`;
             if (directorsList.length) extraInfo += `<div class="mt-1"><strong>Diretor(es):</strong><div class="mt-0.5">${renderTagsFromArray(directorsList)}</div></div>`;
